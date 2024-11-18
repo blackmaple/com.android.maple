@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.maple.gamedto.GameSessionObjectDTO;
+import com.android.maple.monodto.ApiActionIndex;
 import com.android.maple.service.MapleService;
 
 public class UIMenuMain {
@@ -54,8 +56,9 @@ public class UIMenuMain {
         this.m_MenuSelected.setOnClickListener_Currency(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String json = "{ \"session\" = \"123\"}";
-                UIMenuMain.this.m_Service.ApiAction(0,json);
+
+                String json = "{\"sessionT\":\"123\"}";// UIMenuMain.this.m_Service.getJsonObject().toJson(new GameSessionObjectDTO("哇哇哇哇"));
+                UIMenuMain.this.m_Service.ApiAction(ApiActionIndex.None, json);
             }
         });
 

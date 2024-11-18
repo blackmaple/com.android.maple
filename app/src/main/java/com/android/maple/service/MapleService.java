@@ -1,6 +1,25 @@
 package com.android.maple.service;
 
+import com.android.maple.gamedto.GameCurrencyDisplayDTO;
+import com.android.maple.gamedto.GameSessionObjectDTO;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 public class MapleService {
+
+    Gson m_JsonObject;
+
+    public Gson getJsonObject() {
+        return this.m_JsonObject;
+    }
+
+
+    public MapleService() {
+        m_JsonObject = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .create();
+    }
 
     static {
         System.loadLibrary("maple");
