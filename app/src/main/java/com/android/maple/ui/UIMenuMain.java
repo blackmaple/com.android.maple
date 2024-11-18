@@ -5,8 +5,11 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.maple.gamedto.GameSessionInfoDTO;
 import com.android.maple.gamedto.GameSessionObjectDTO;
 import com.android.maple.monodto.ApiActionIndex;
+import com.android.maple.monodto.MonoGenericResultDTO;
+import com.android.maple.service.ICallbackListener;
 import com.android.maple.service.MapleService;
 
 public class UIMenuMain {
@@ -57,20 +60,25 @@ public class UIMenuMain {
             @Override
             public void onClick(View view) {
 
-                String json = "{\"sessionT\":\"123\"}";// UIMenuMain.this.m_Service.getJsonObject().toJson(new GameSessionObjectDTO("哇哇哇哇"));
-                UIMenuMain.this.m_Service.ApiAction(ApiActionIndex.None, json);
+                UIDialogComponent dialogComponent = new UIDialogComponent(getContext());
+                UIMenuMain.this.m_MenuFloat.setContentView(dialogComponent);
+                //    String json = UIMenuMain.this.m_Service.getJsonObject().toJson(new GameSessionObjectDTO("哇哇哇哇"));
+                //    UIMenuMain.this.m_Service.ApiAction(ApiActionIndex.None, json);
             }
         });
 
-        this.m_Service.setNoneCallbackListener(new MapleService.ICallbackListener<String>() {
+        this.m_Service.setNoneCallbackListener(new ICallbackListener<MonoGenericResultDTO<GameSessionInfoDTO>>() {
             @Override
-            public boolean Callback(String data) {
-                return UIMenuMain.this.m_handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getContext(), data, Toast.LENGTH_SHORT).show();
-                    }
-                });
+            public boolean onCallback(MonoGenericResultDTO<GameSessionInfoDTO> data) {
+                if (data.OK() && data.DATA != null) {
+                    return UIMenuMain.this.m_handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getContext(), data.DATA.ApiVer, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                return false;
             }
         });
     }
