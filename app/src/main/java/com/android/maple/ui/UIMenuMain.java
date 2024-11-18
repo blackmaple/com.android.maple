@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.android.maple.gamedto.GameSessionInfoDTO;
-import com.android.maple.gamedto.GameSessionObjectDTO;
-import com.android.maple.monodto.ApiActionIndex;
 import com.android.maple.monodto.MonoGenericResultDTO;
 import com.android.maple.service.ICallbackListener;
 import com.android.maple.service.MapleService;
@@ -60,7 +58,7 @@ public class UIMenuMain {
             @Override
             public void onClick(View view) {
 
-                UIDialogComponent dialogComponent = new UIDialogComponent(getContext());
+                UIDialogRecyclerView dialogComponent = new UIDialogRecyclerView(getContext());
                 UIMenuMain.this.m_MenuFloat.setContentView(dialogComponent);
                 //    String json = UIMenuMain.this.m_Service.getJsonObject().toJson(new GameSessionObjectDTO("哇哇哇哇"));
                 //    UIMenuMain.this.m_Service.ApiAction(ApiActionIndex.None, json);

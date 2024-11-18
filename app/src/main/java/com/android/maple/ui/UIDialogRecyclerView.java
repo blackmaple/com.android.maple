@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -15,12 +14,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,29 +33,26 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public  class UIDialogComponent extends LinearLayout
-{
+public class UIDialogRecyclerView extends LinearLayout {
     public RecyclerView mRecyclerView;
     Gson mGson;
 
-    public UIDialogComponent(Context context) {
+    public UIDialogRecyclerView(Context context) {
         super(context);
         InitView(context);
-        mGson =   new GsonBuilder()
+        mGson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
                 .create();
         this.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, // 宽度
-                ViewGroup.LayoutParams.MATCH_PARENT
-
-                // 高度
+                ViewGroup.LayoutParams.MATCH_PARENT // 高度
         );
         this.setLayoutParams(params);
     }
+
     @SuppressLint("UseCompatLoadingForDrawables")
-    private  void InitView(Context context)
-    {
+    private void InitView(Context context) {
         int firstViewHeight = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 60,
@@ -79,12 +75,12 @@ public  class UIDialogComponent extends LinearLayout
         );
         int buttonWidth = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                80,
+                64,
                 getResources().getDisplayMetrics()
         );
         int buttonHeight = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                40,
+                64,
                 getResources().getDisplayMetrics()
         );
         setBackgroundColor(Color.parseColor("#e0000000"));
@@ -125,11 +121,13 @@ public  class UIDialogComponent extends LinearLayout
         gradientDrawable.setCornerRadius(12f);
         buttonParams.setMargins(buttonMargin, 0, 0, 0);
         firstButton.setTooltipText("Search");
-     //   firstButton.setBackground(gradientDrawable);
+        firstButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        //   firstButton.setBackground(gradientDrawable);
         firstView.addView(firstButton, 1, buttonParams);
         ImageButton secondButton = UIResourceManager.createCloseButton(context);
+        secondButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
         secondButton.setTooltipText("Close");
-   //     secondButton.setBackground(gradientDrawable);
+        //     secondButton.setBackground(gradientDrawable);
         firstView.addView(secondButton, 2, buttonParams);
         LayoutParams firstViewParams = new LayoutParams(
                 LayoutParams.MATCH_PARENT, // 宽度
@@ -156,8 +154,8 @@ public  class UIDialogComponent extends LinearLayout
 
 
         addView(mRecyclerView, 1, recyclerViewParams);
-       // 分割线颜色
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(dividerHeight,Color.GRAY);
+        // 分割线颜色
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(dividerHeight, Color.GRAY);
 
 
         mRecyclerView.addItemDecoration(dividerItemDecoration);
@@ -170,12 +168,12 @@ public  class UIDialogComponent extends LinearLayout
         List<GameCurrencyDisplayDTO> list = mGson.fromJson(json, listType);
         CustomAdapter adapter = new CustomAdapter(getContext(), list);
         mRecyclerView.setAdapter(adapter);
-        adapter.setItemClickListener((view, data, position) -> Toast.makeText(getContext(), data +
+        adapter.setItemClickListener((view, data, position) -> Toast.makeText(getContext(), data.ObjectId +
                 "被点击了", Toast.LENGTH_SHORT).show());
     }
 
 
-    public  static class DividerItemDecoration extends RecyclerView.ItemDecoration {
+    public static class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
         private final Paint paint;
         private final int dividerHeight;
@@ -215,44 +213,41 @@ public  class UIDialogComponent extends LinearLayout
         private int mDescViewTopMargin;
         private int mButtonWidth;
         private int mButtonHeight;
-        private final GradientDrawable mButtonBackground;
         private final LinearLayout.LayoutParams mLeftViewParams;
         private final LinearLayout.LayoutParams mDescViewParams;
-        List<GameCurrencyDisplayDTO> data = new ArrayList<>();
+        List<GameCurrencyDisplayDTO> data = new ArrayList<>(1024);
         private onRecyclerItemClickerListener mListener;
 
         public CustomAdapter(Context context, List<GameCurrencyDisplayDTO> data) {
             this.mContext = context;
-            this.data = data;
+            this.data.addAll(data);
             initSize();
-            mButtonBackground = new GradientDrawable();
+            GradientDrawable mButtonBackground = new GradientDrawable();
             mButtonBackground.setShape(GradientDrawable.RECTANGLE);
             mButtonBackground.setColor(mContext.getResources().getColor(android.R.color.holo_orange_dark));
             mButtonBackground.setCornerRadius(12f);
-            mLeftViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                    // 宽度
+            mLeftViewParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT
-                    // 高度
             );
             mLeftViewParams.weight = 1.0f;
 
-            mDescViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                    // 宽度
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                    // 高度
+            mDescViewParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,// 宽度
+                    ViewGroup.LayoutParams.WRAP_CONTENT// 高度
             );
             mDescViewParams.setMargins(0, mDescViewTopMargin, 0, 0);
 
 
             mItemViewParams =
                     new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, mItemHeight);
-            mButtonParams = new LinearLayout.LayoutParams(mButtonWidth,
+            mButtonParams = new LinearLayout.LayoutParams(
+                    mButtonWidth,
                     mButtonHeight
-
-                    // 高度
-            );
+                     );
             mTagViewParams =
-                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, // 宽度
+                    new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT, // 宽度
                             mTagViewHeight
                             // 高度
                     );
@@ -315,12 +310,10 @@ public  class UIDialogComponent extends LinearLayout
             holder.titleView.setText(itemEntity.DisplayName);
             holder.tagView.setText(itemEntity.DisplayCategory);
             holder.descView.setText(itemEntity.DisplayDesc);
-            holder.rootView.setOnClickListener(new View.OnClickListener() {
+            holder.rightView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mListener != null) {
-                        mListener.onRecyclerItemClick(view, data.get(position), position);
-                    }
+                    mListener.onRecyclerItemClick(view,itemEntity,position);
                 }
             });
         }
@@ -330,8 +323,9 @@ public  class UIDialogComponent extends LinearLayout
             return data.size();
         }
 
-        public      class RecyclerHolder extends RecyclerView.ViewHolder {
+        public class RecyclerHolder extends RecyclerView.ViewHolder {
             TextView titleView, tagView, descView;
+            ImageButton rightView;
             LinearLayout rootView;
 
             private RecyclerHolder(LinearLayout rootView) {
@@ -342,9 +336,9 @@ public  class UIDialogComponent extends LinearLayout
                 leftView.setGravity(Gravity.CENTER);
                 leftView.setOrientation(LinearLayout.VERTICAL);
                 LinearLayout leftTopView = new LinearLayout(mContext);
-                ImageButton rightView = UIResourceManager.createSwitchButton(mContext);
+                rightView = UIResourceManager.createSwitchButton(mContext);
 
-       //         rightView.setBackground(mButtonBackground);
+                //         rightView.setBackground(mButtonBackground);
                 rightView.setLayoutParams(mButtonParams);
                 rightView.setTooltipText("Edit");
                 leftTopView.setOrientation(LinearLayout.HORIZONTAL);
