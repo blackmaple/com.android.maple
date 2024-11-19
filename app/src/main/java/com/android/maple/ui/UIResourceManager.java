@@ -2,7 +2,6 @@ package com.android.maple.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -13,7 +12,6 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.util.Base64;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -50,16 +48,13 @@ public class UIResourceManager {
     @SuppressLint("ClickableViewAccessibility")
     public static void onTouchChangeButtonColor(ImageButton button, int defColor, int touchColor) {
         setImageButtonColor(button, defColor);
-        button.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    setImageButtonColor(button, touchColor);
-                } else {
-                    setImageButtonColor(button, defColor);
-                }
-                return false;
+        button.setOnTouchListener((view, motionEvent) -> {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                setImageButtonColor(button, touchColor);
+            } else {
+                setImageButtonColor(button, defColor);
             }
+            return false;
         });
     }
 

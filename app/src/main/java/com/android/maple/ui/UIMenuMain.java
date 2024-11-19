@@ -5,10 +5,8 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
-import com.android.maple.gamedto.GameSessionInfoDTO;
-import com.android.maple.monodto.MonoGenericResultDTO;
-import com.android.maple.service.ICallbackListener;
 import com.android.maple.service.MapleService;
+import com.android.maple.view.UIDialogRecyclerView;
 
 public class UIMenuMain {
     MapleService m_Service;
@@ -40,44 +38,23 @@ public class UIMenuMain {
         this.m_DialogCharacter = new UIDialogCharacter(this);
         this.m_DialogSwitch = new UIDialogSwitch(this);
 
-        this.m_MenuRoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //  Toast.makeText(view.getContext(), "123", Toast.LENGTH_SHORT).show();
-                UIMenuMain.this.m_MenuSelected.show();
-            }
+        this.m_MenuRoot.setOnClickListener(view -> {
+            //  Toast.makeText(view.getContext(), "123", Toast.LENGTH_SHORT).show();
+            UIMenuMain.this.m_MenuSelected.show();
         });
 
-        this.m_MenuSelected.setOnClickListener_Close(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                UIMenuMain.this.m_MenuRoot.show();
-            }
-        });
-        this.m_MenuSelected.setOnClickListener_Currency(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        this.m_MenuSelected.setOnClickListener_Close(view -> UIMenuMain.this.m_MenuRoot.show());
+        this.m_MenuSelected.setOnClickListener_Currency(view -> {
 
-                UIDialogRecyclerView dialogComponent = new UIDialogRecyclerView(getContext());
-                UIMenuMain.this.m_MenuFloat.setContentView(dialogComponent);
-                //    String json = UIMenuMain.this.m_Service.getJsonObject().toJson(new GameSessionObjectDTO("哇哇哇哇"));
-                //    UIMenuMain.this.m_Service.ApiAction(ApiActionIndex.None, json);
-            }
+          //  UIDialogRecyclerView dialogComponent = new UIDialogRecyclerView(getContext());
+        //    UIMenuMain.this.m_MenuFloat.setContentView(dialogComponent.getView());
         });
 
-        this.m_Service.setNoneCallbackListener(new ICallbackListener<MonoGenericResultDTO<GameSessionInfoDTO>>() {
-            @Override
-            public boolean onCallback(MonoGenericResultDTO<GameSessionInfoDTO> data) {
-                if (data.OK() && data.DATA != null) {
-                    return UIMenuMain.this.m_handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getContext(), data.DATA.ApiVer, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                return false;
+        this.m_Service.setNoneCallbackListener(data -> {
+            if (data.OK() && data.DATA != null) {
+                return UIMenuMain.this.m_handler.post(() -> Toast.makeText(getContext(), data.DATA.ApiVer, Toast.LENGTH_SHORT).show());
             }
+            return false;
         });
     }
 
