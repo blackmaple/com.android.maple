@@ -22,20 +22,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.maple.gamedto.GameObjectDisplayDTO;
 import com.android.maple.ui.UIResourceManager;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO> extends RecyclerView.Adapter<UIRecyclerViewAdapter<TItem>.UIRecyclerViewHolder> {
     private final GradientDrawable mTagViewBackground;
     private final LinearLayout.LayoutParams mItemViewParams;
     private final LinearLayout.LayoutParams mButtonParams;
     private final LinearLayout.LayoutParams mTagViewParams;
-    private final int mWhiteColor;
-    private final int mGreenColor;
     private int mItemHeight;
-    private final Context mContext;
     private int mTagPadding;
     private int mTagViewHeight;
     private int mDescViewTopMargin;
@@ -49,71 +49,80 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO> extends R
     private OnItemClickerListener<TItem> mOnItemClickerListener;
 
     public UIRecyclerViewAdapter(Context context) {
-        this.mContext = context;
-        initSize();
-        GradientDrawable mButtonBackground = new GradientDrawable();
-        mButtonBackground.setShape(GradientDrawable.RECTANGLE);
-        mButtonBackground.setColor(Color.parseColor("#ffff8800"));
-        mButtonBackground.setCornerRadius(12f);
-        mLeftViewParams = new LinearLayout.LayoutParams(
+
+        initDisplaySize(context);
+
+        this.mLeftViewParams = createLeftViewParams();
+        this.mDescViewParams = createDescViewParams();
+        this.mItemViewParams = createItemViewParams();
+        this.mButtonParams = createButtonParams();
+        this.mTagViewParams = createTagViewParams();
+        this.mTagViewBackground = createTagViewBackground();
+
+    }
+
+    private void initDisplaySize(@NonNull Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        mButtonWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, displayMetrics);
+        mButtonHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, displayMetrics);
+        mItemHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 90, displayMetrics);
+        mTagPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14, displayMetrics);
+        mDescViewTopMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, displayMetrics);
+        mTagViewHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 28, displayMetrics);
+    }
+
+    @NonNull
+    private LinearLayout.LayoutParams createLeftViewParams() {
+        LinearLayout.LayoutParams leftViewParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
         );
-        mLeftViewParams.weight = 1.0f;
+        leftViewParams.weight = 1.0f;
+        return leftViewParams;
+    }
 
-        mDescViewParams = new LinearLayout.LayoutParams(
+    @NonNull
+    private LinearLayout.LayoutParams createDescViewParams() {
+        LinearLayout.LayoutParams descViewParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,// 宽度
                 ViewGroup.LayoutParams.WRAP_CONTENT// 高度
         );
-        mDescViewParams.setMargins(0, mDescViewTopMargin, 0, 0);
+        descViewParams.setMargins(0, mDescViewTopMargin, 0, 0);
+        return descViewParams;
+    }
 
+    @NonNull
+    @Contract(" -> new")
+    private LinearLayout.LayoutParams createItemViewParams() {
+        return new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, mItemHeight);
+    }
 
-        mItemViewParams =
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, mItemHeight);
-        mButtonParams = new LinearLayout.LayoutParams(
+    @NonNull
+    @Contract(" -> new")
+    private LinearLayout.LayoutParams createButtonParams() {
+        return new LinearLayout.LayoutParams(
                 mButtonWidth,
                 mButtonHeight
         );
-        mTagViewParams =
-                new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT, // 宽度
-                        mTagViewHeight
-                        // 高度
-                );
-        mTagViewParams.setMargins(mTagPadding, 0, 0, 0);
-        mWhiteColor = Color.parseColor("#ffffffff");
-        mGreenColor = Color.parseColor("#ff669900");
-        mTagViewBackground = new GradientDrawable();
-        mTagViewBackground.setShape(GradientDrawable.RECTANGLE);
-        mTagViewBackground.setStroke(2,
-                mGreenColor); //
-        // 2px宽度的蓝色边框
-        mTagViewBackground.setCornerRadius(12f);
     }
 
-    private void initSize() {
-        DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
-        mButtonWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64,
-                displayMetrics);
-        mButtonHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64,
-                displayMetrics);
-        mItemHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 90,
-                displayMetrics);
-        mTagPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                // 100dp
-                14,
-                // 显示密度
-                displayMetrics);
-        mDescViewTopMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                // 100dp
-                6,
-                // 显示密度
-                displayMetrics);
-        mTagViewHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                // 100dp
-                28,
-                // 显示密度
-                displayMetrics);
+    @NonNull
+    private LinearLayout.LayoutParams createTagViewParams() {
+        LinearLayout.LayoutParams tagViewParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                mTagViewHeight
+        );
+        tagViewParams.setMargins(mTagPadding, 0, 0, 0);
+        return tagViewParams;
+    }
+
+    @NonNull
+    private GradientDrawable createTagViewBackground() {
+        GradientDrawable tagViewBackground = new GradientDrawable();
+        tagViewBackground.setShape(GradientDrawable.RECTANGLE);
+        tagViewBackground.setStroke(2, Color.parseColor("#ff669900")); //
+        tagViewBackground.setCornerRadius(12f);
+        return tagViewBackground;
     }
 
 
@@ -125,13 +134,16 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO> extends R
     @NonNull
     @Override
     public UIRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LinearLayout itemView = new LinearLayout(parent.getContext());
+        return new UIRecyclerViewHolder(createRootLinearLayout(parent.getContext()));
+    }
 
-        itemView.setPadding(mTagPadding, 0, mTagPadding, 0);
-        itemView.setGravity(Gravity.CENTER);
-        itemView.setOrientation(LinearLayout.HORIZONTAL);
-        itemView.setLayoutParams(mItemViewParams);
-        return new UIRecyclerViewHolder(itemView);
+    private LinearLayout createRootLinearLayout(Context context) {
+        LinearLayout rootView = new LinearLayout(context);
+        rootView.setPadding(mTagPadding, 0, mTagPadding, 0);
+        rootView.setGravity(Gravity.CENTER);
+        rootView.setOrientation(LinearLayout.HORIZONTAL);
+        rootView.setLayoutParams(mItemViewParams);
+        return rootView;
     }
 
     @Override
@@ -161,6 +173,7 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO> extends R
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void replaceAll(List<TItem> items) {
         this.mListAllDataSource.clear();
         this.mListAllDataSource.addAll(items);
@@ -173,20 +186,23 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO> extends R
         void onItemClick(TItem item);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void onSearch(@Nullable String key) {
-        if (key == null || key.isEmpty()) {
-            return;
-        }
         this.mListSearchDataSource.clear();
-        this.mListAllDataSource.forEach(item ->
-        {
-            String lowKey = key.toLowerCase();
-            if (containsSearch(item.DisplayName, lowKey)
-                    || containsSearch(item.DisplayCategory, lowKey)
-                    || containsSearch(item.DisplayDesc, lowKey)) {
-                 this.mListSearchDataSource.add(item);
-            }
-        });
+        if (key == null || key.isEmpty()) {
+            this.mListSearchDataSource.addAll(this.mListAllDataSource);
+        } else {
+            this.mListAllDataSource.forEach(item ->
+            {
+                String lowKey = key.toLowerCase();
+                if (containsSearch(item.DisplayName, lowKey)
+                        || containsSearch(item.DisplayCategory, lowKey)
+                        || containsSearch(item.DisplayDesc, lowKey)) {
+                    this.mListSearchDataSource.add(item);
+                }
+            });
+
+        }
         this.notifyDataSetChanged();
 
     }
@@ -200,70 +216,104 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO> extends R
 
 
     public class UIRecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView titleView, tagView, descView;
-        ImageButton rightView;
-        LinearLayout rootView;
+        TextView mTitleView, mTagView, mDescView;
+        ImageButton mEditButton;
+        LinearLayout mRootView;
 
         private UIRecyclerViewHolder(LinearLayout rootView) {
+
             super(rootView);
-            this.rootView = rootView;
+            this.mRootView = rootView;
+
+            Context context = rootView.getContext();
+            this.mTitleView = createTitleTextView(context);
+            this.mTagView = createTagTextView(context);
+            LinearLayout leftTopView = createLeftTopLinearLayout(context);
+            leftTopView.addView(this.mTitleView, 0);
+            leftTopView.addView(this.mTagView, 1);
+
+            this.mDescView = createDescTextView(context);
+            LinearLayout leftView = createLeftLinearLayout(context);
+            leftView.addView(leftTopView, 0);
+            leftView.addView(this.mDescView, 1);
+
+            this.mEditButton = createEditButton(context);
+            this.mRootView.addView(leftView, 0, mLeftViewParams);
+            this.mRootView.addView(this.mEditButton, 1);
+        }
 
 
-            titleView = new TextView(mContext);
-            titleView.setTextColor(mWhiteColor);
+        @NonNull
+        private TextView createTitleTextView(Context context) {
+            TextView titleView = new TextView(context);
+            titleView.setTextColor(Color.parseColor("#ffffffff"));
+            return titleView;
+        }
 
-            tagView = new TextView(mContext);
+        @NonNull
+        private TextView createTagTextView(Context context) {
+            TextView tagView = new TextView(context);
             tagView.setPadding(mTagPadding, 0, mTagPadding, 0);
             tagView.setLayoutParams(mTagViewParams);
             tagView.setGravity(Gravity.CENTER);
-            tagView.setTextColor(mGreenColor);
+            tagView.setTextColor(Color.parseColor("#ff669900"));
             tagView.setBackground(mTagViewBackground);
+            return tagView;
+        }
 
-            LinearLayout leftTopView = new LinearLayout(mContext);
-            leftTopView.setOrientation(LinearLayout.HORIZONTAL);
-            leftTopView.setGravity(Gravity.CENTER_VERTICAL);
-            leftTopView.addView(titleView, 0);
-            leftTopView.addView(tagView, 1);
-
-
-            LinearLayout leftView = new LinearLayout(mContext);
-            leftView.setGravity(Gravity.CENTER);
-            leftView.setOrientation(LinearLayout.VERTICAL);
-            leftView.addView(leftTopView, 0);
-
-            descView = new TextView(mContext);
+        @NonNull
+        @SuppressLint("RtlHardcoded")
+        private TextView createDescTextView(Context context) {
+            TextView descView = new TextView(context);
             descView.setLayoutParams(mDescViewParams);
-            descView.setTextColor(mWhiteColor);
+            descView.setTextColor(Color.parseColor("#ffffffff"));
             descView.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
             descView.setEllipsize(TextUtils.TruncateAt.END);
             descView.setMaxLines(2);
-            leftView.addView(descView, 1);
+            return descView;
+        }
 
-            rootView.addView(leftView, 0, mLeftViewParams);
+        @NonNull
+        private LinearLayout createLeftTopLinearLayout(Context context) {
+            LinearLayout leftTopView = new LinearLayout(context);
+            leftTopView.setOrientation(LinearLayout.HORIZONTAL);
+            leftTopView.setGravity(Gravity.CENTER_VERTICAL);
+            return leftTopView;
+        }
 
-            rightView = UIResourceManager.createSwitchButton(mContext);
-            rightView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            rightView.setLayoutParams(mButtonParams);
-            rightView.setTooltipText("Edit");
-            rightView.setOnClickListener(this);
-            rootView.addView(rightView, 1);
+        @NonNull
+        private LinearLayout createLeftLinearLayout(Context context) {
+            LinearLayout leftView = new LinearLayout(context);
+            leftView.setGravity(Gravity.CENTER);
+            leftView.setOrientation(LinearLayout.VERTICAL);
+            return leftView;
+        }
+
+        @NonNull
+        private ImageButton createEditButton(Context context) {
+            ImageButton editButton = UIResourceManager.createSwitchButton(context);
+            editButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            editButton.setLayoutParams(mButtonParams);
+            editButton.setTooltipText("Edit");
+            editButton.setOnClickListener(this);
+            return editButton;
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public void onClick(View view) {
             if (mOnItemClickerListener != null) {
-                Object item = rightView.getTag();
-                if (item instanceof GameObjectDisplayDTO) {
+                Object item = this.mEditButton.getTag();
+                if (item instanceof GameObjectDisplayDTO)
                     mOnItemClickerListener.onItemClick((TItem) item);
-                }
             }
         }
 
         private void setDisplayText(@NonNull TItem item) {
-            titleView.setText(item.DisplayName);
-            tagView.setText(item.DisplayCategory);
-            descView.setText(item.DisplayDesc);
-            rightView.setTag(item);
+            this.mTitleView.setText(item.DisplayName);
+            this.mTagView.setText(item.DisplayCategory);
+            this.mDescView.setText(item.DisplayDesc);
+            this.mEditButton.setTag(item);
         }
     }
 
