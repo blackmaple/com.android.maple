@@ -1,24 +1,28 @@
 package com.android.maple.service;
 
 import com.android.maple.gamedto.GameSessionInfoDTO;
+import com.android.maple.gamedto.GameSessionObjectDTO;
+import com.android.maple.monodto.ApiActionIndex;
 import com.android.maple.monodto.MonoGenericResultDTO;
 import com.google.gson.FieldNamingPolicy;
+import com.google.gson.FieldNamingStrategy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
+import java.lang.reflect.Field;
 
 public class MapleService {
 
     Gson m_JsonObject;
 
     public MapleService() {
+
         m_JsonObject = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create();
 
-        this.m_NoneAction = new ServiceApiAction<>(m_JsonObject, new TypeToken<MonoGenericResultDTO<GameSessionInfoDTO>>() {
+        this.m_NoneAction = new ApiAction<>(m_JsonObject, new TypeToken<MonoGenericResultDTO<GameSessionInfoDTO>>() {
         }.getType());
     }
 
@@ -29,13 +33,13 @@ public class MapleService {
 
     public native boolean TestAction(String txt);
 
-    public native boolean ApiAction(int actionIndex, String txt);
+    public native boolean ApiAction(int actionIndex, String json);
 
     /************************************************/
 
     /*callback*/
 
-    ServiceApiAction<MonoGenericResultDTO<GameSessionInfoDTO>> m_NoneAction;
+    ApiAction<MonoGenericResultDTO<GameSessionInfoDTO>> m_NoneAction;
 
     public void setNoneCallbackListener(ICallbackListener<MonoGenericResultDTO<GameSessionInfoDTO>> l) {
         this.m_NoneAction.setCallbackListener(l);
@@ -44,6 +48,13 @@ public class MapleService {
     public boolean None(String json) {
         return this.m_NoneAction.onCallback(json);
     }
+
+    public boolean NoneAction() {
+        GameSessionObjectDTO dto = new GameSessionObjectDTO(String.valueOf(android.os.Process.myPid()));
+        String json = this.m_JsonObject.toJson(dto);
+        return this.ApiAction(ApiActionIndex.None, json);
+    }
+
 
     ICallbackListener<String> m_EnumImagesCallback;
     ICallbackListener<String> m_EnumClassesCallback;

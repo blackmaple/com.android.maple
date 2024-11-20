@@ -1,6 +1,9 @@
 package com.android.maple.ui;
 
-public class UIDialogSwitch extends UIComponent {
+import com.android.maple.gamedto.GameSwitchDisplayDTO;
+import com.android.maple.view.UIDialogRecyclerView;
+
+public class UIDialogSwitch extends UIDialogRecyclerView<GameSwitchDisplayDTO> {
     public UIDialogSwitch(UIMenuMain menuMain) {
         super(menuMain);
     }

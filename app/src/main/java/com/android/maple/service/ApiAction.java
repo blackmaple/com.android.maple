@@ -1,16 +1,15 @@
 package com.android.maple.service;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-public class ServiceApiAction<T> {
+public class ApiAction<T> {
     private ICallbackListener<T> m_CallbackListener;
     private final Gson m_JsonObject;
     private final Type m_JsonTypeInfo;
 
-    public ServiceApiAction(Gson jsonObj, Type type) {
+    public ApiAction(Gson jsonObj, Type type) {
         this.m_JsonObject = jsonObj;
         this.m_JsonTypeInfo = type;
     }

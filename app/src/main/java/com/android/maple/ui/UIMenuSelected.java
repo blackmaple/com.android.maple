@@ -33,33 +33,22 @@ public class UIMenuSelected extends UIComponent {
         this.m_Layout.addView(this.m_ButtonCharacter, 2, this.getButtonLayoutParams());
         this.m_Layout.addView(this.m_ButtonSwitch, 3, this.getButtonLayoutParams());
         this.m_Layout.addView(this.m_ButtonClose, 4, this.getButtonLayoutParams());
+
+        this.m_ButtonCharacter.setOnClickListener((view)->this.getMenuMain().changeDialogCurrency());
+        this.m_ButtonCurrency.setOnClickListener((view)->this.getMenuMain().changeDialogCurrency());
+        this.m_ButtonInventory.setOnClickListener((view)->this.getMenuMain().changeDialogInventory());
+        this.m_ButtonSwitch.setOnClickListener((view)->this.getMenuMain().changeDialogSwitch());
+        this.m_ButtonClose.setOnClickListener((view)->this.getMenuMain().changeMenuRoot());
+
+
+
     }
 
-    public void setOnClickListener_Currency(View.OnClickListener l) {
-        this.m_ButtonCurrency.setOnClickListener(l);
-    }
 
-    public void setOnClickListener_Inventory(View.OnClickListener l) {
-        this.m_ButtonInventory.setOnClickListener(l);
-    }
-
-    public void setOnClickListener_Character(View.OnClickListener l) {
-        this.m_ButtonCharacter.setOnClickListener(l);
-    }
-
-    public void setOnClickListener_Switch(View.OnClickListener l) {
-        this.m_ButtonSwitch.setOnClickListener(l);
-    }
-
-    public void setOnClickListener_Close(View.OnClickListener l) {
-        this.m_ButtonClose.setOnClickListener(l);
-    }
 
     public View getView() {
         return this.m_Layout;
     }
 
-    public void show() {
-        this.m_MenuMain.changeContentView(this.getView());
-    }
+
 }

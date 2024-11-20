@@ -68,7 +68,7 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO>
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         mButtonWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, displayMetrics);
         mButtonHeight = mButtonWidth + 1 - 1;//(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, displayMetrics);
-        mItemHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, displayMetrics);
+        mItemHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 72, displayMetrics);
         mTagPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14, displayMetrics);
         mDescViewTopMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, displayMetrics);
         mTagViewHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, displayMetrics);
@@ -123,9 +123,9 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO>
     @NonNull
     private GradientDrawable createTagViewBackground() {
         GradientDrawable tagViewBackground = new GradientDrawable();
-        tagViewBackground.setShape(GradientDrawable.LINEAR_GRADIENT);
+        tagViewBackground.setShape(GradientDrawable.RECTANGLE);
         tagViewBackground.setStroke(4, UIResourceManager.Color_Green); //
-        tagViewBackground.setCornerRadius(16f);
+        tagViewBackground.setCornerRadius(8F);
         return tagViewBackground;
     }
 

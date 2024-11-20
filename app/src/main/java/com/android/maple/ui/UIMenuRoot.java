@@ -26,18 +26,14 @@ public class UIMenuRoot extends UIComponent {
         Context context = menuMain.getContext();
         this.m_Layout = UIResourceManager.createLayout(context);
         this.m_ButtonMenu = UIResourceManager.createMenuButton(context);
-        this.m_Layout.addView(this.m_ButtonMenu,0,this.getButtonLayoutParams());
+        this.m_Layout.addView(this.m_ButtonMenu, 0, this.getButtonLayoutParams());
+        this.m_ButtonMenu.setOnClickListener((view) -> this.getMenuMain().changeMenuSelected());
     }
 
-    public void setOnClickListener(View.OnClickListener l) {
-        this.m_ButtonMenu.setOnClickListener(l);
-    }
 
     public View getView() {
         return this.m_Layout;
     }
 
-    public void show() {
-        this.m_MenuMain.changeContentView(this.getView());
-    }
+
 }

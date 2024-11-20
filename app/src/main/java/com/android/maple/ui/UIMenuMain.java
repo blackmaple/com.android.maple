@@ -3,10 +3,8 @@ package com.android.maple.ui;
 import android.content.Context;
 import android.os.Handler;
 import android.view.View;
-import android.widget.Toast;
 
 import com.android.maple.service.MapleService;
-import com.android.maple.view.UIDialogRecyclerView;
 
 public class UIMenuMain {
     MapleService m_Service;
@@ -38,24 +36,25 @@ public class UIMenuMain {
         this.m_DialogCharacter = new UIDialogCharacter(this);
         this.m_DialogSwitch = new UIDialogSwitch(this);
 
-        this.m_MenuRoot.setOnClickListener(view -> {
-            //  Toast.makeText(view.getContext(), "123", Toast.LENGTH_SHORT).show();
-            UIMenuMain.this.m_MenuSelected.show();
-        });
 
-        this.m_MenuSelected.setOnClickListener_Close(view -> UIMenuMain.this.m_MenuRoot.show());
-        this.m_MenuSelected.setOnClickListener_Currency(view -> {
-
-          //  UIDialogRecyclerView dialogComponent = new UIDialogRecyclerView(getContext());
-        //    UIMenuMain.this.m_MenuFloat.setContentView(dialogComponent.getView());
-        });
-
-        this.m_Service.setNoneCallbackListener(data -> {
-            if (data.OK() && data.DATA != null) {
-                return UIMenuMain.this.m_handler.post(() -> Toast.makeText(getContext(), data.DATA.ApiVer, Toast.LENGTH_SHORT).show());
-            }
-            return false;
-        });
+//        this.m_MenuRoot.setOnClickListener(view -> {
+//            //  Toast.makeText(view.getContext(), "123", Toast.LENGTH_SHORT).show();
+//            UIMenuMain.this.m_MenuSelected.show();
+//        });
+//
+//        this.m_MenuSelected.setOnClickListener_Close(view -> UIMenuMain.this.m_MenuRoot.show());
+//        this.m_MenuSelected.setOnClickListener_Currency(view -> {
+//
+//            //  UIDialogRecyclerView dialogComponent = new UIDialogRecyclerView(getContext());
+//            //    UIMenuMain.this.m_MenuFloat.setContentView(dialogComponent.getView());
+//        });
+//
+//        this.m_Service.setNoneCallbackListener(data -> {
+//            if (data.OK() && data.DATA != null) {
+//                return UIMenuMain.this.m_handler.post(() -> Toast.makeText(getContext(), data.DATA.ApiVer, Toast.LENGTH_SHORT).show());
+//            }
+//            return false;
+//        });
     }
 
     public Context getContext() {
@@ -63,12 +62,44 @@ public class UIMenuMain {
     }
 
     public void show() {
-        this.changeContentView(this.m_MenuRoot.getView());
-        this.m_MenuFloat.show();
+        this.changeContentView(this.m_MenuRoot.getView(),true);
+
     }
 
-    public void changeContentView(View view) {
-        this.m_MenuFloat.setContentView(view);
-        //this.m_MenuFloat.show();
+    public void changeContentView(View view,boolean full) {
+        this.m_MenuFloat.changeContentView(view,full);
+
+
     }
+
+    public MapleService getService() {
+        return this.m_Service;
+    }
+
+    public void changeMenuRoot() {
+        this.changeContentView(this.m_MenuRoot.getView(),true);
+
+    }
+
+    public void changeMenuSelected() {
+        this.changeContentView(this.m_MenuSelected.getView(),true);
+    }
+
+    public void changeDialogCurrency() {
+        this.changeContentView(this.m_DialogCurrency.getView(),false);
+    }
+
+    public void changeDialogInventory() {
+        this.changeContentView(this.m_DialogInventory.getView(),false);
+    }
+
+    public void changeDialogCharacter() {
+        this.changeContentView(this.m_DialogCharacter.getView(),false);
+    }
+
+    public void changeDialogSwitch() {
+
+        this.changeContentView(this.m_DialogSwitch.getView(),false);
+    }
+
 }

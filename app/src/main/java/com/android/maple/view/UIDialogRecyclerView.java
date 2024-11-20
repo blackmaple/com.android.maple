@@ -33,7 +33,7 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> extends UI
 
     LinearLayout mRootView;
     RecyclerView mRecyclerView;
-    UIRecyclerViewAdapter<TItem> mViewAdapter;
+    protected UIRecyclerViewAdapter<TItem> mViewAdapter;
 
 
     public UIDialogRecyclerView(UIMenuMain main) {
@@ -49,11 +49,9 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> extends UI
             return false;
         });
         ImageButton refreshButton = createRefreshButton(context);
-        refreshButton.setOnClickListener((view) -> {
-            UIDialogRecyclerView.this.OnLoad();
-        });
+        refreshButton.setOnClickListener((view) -> this.OnLoad());
         ImageButton closeButton = createCloseButton(context);
-
+        closeButton.setOnClickListener((view) -> this.onClose());
         LinearLayout toolsView = createToolsLinearLayout(context, displayMetrics);
         toolsView.addView(searchEdit, 0, createEditTextLayoutParams(displayMetrics));
         LinearLayout.LayoutParams buttonParams = createButtonLayoutParams(displayMetrics);
@@ -82,7 +80,8 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> extends UI
     private LinearLayout createRootLinearLayout(Context context) {
         LinearLayout rootView = new LinearLayout(context);
         rootView.setOrientation(LinearLayout.VERTICAL);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
         );
         rootView.setLayoutParams(params);
@@ -211,8 +210,8 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> extends UI
     }
 
     @Override
-    public void onClose() {
-
+    public final void onClose() {
+        this.getMenuMain().changeMenuSelected();
     }
 
     @Override

@@ -7,7 +7,7 @@ public interface IUIMenuFloat {
 
     Context getContext();
 
-    void setContentView(View view);
+    void changeContentView(View view,boolean touchable);
 
-    void show();
+
 }

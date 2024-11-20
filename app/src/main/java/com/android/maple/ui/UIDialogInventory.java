@@ -1,6 +1,9 @@
 package com.android.maple.ui;
 
-public class UIDialogInventory extends UIComponent  {
+import com.android.maple.gamedto.GameInventoryDisplayDTO;
+import com.android.maple.view.UIDialogRecyclerView;
+
+public class UIDialogInventory extends UIDialogRecyclerView<GameInventoryDisplayDTO> {
     public UIDialogInventory(UIMenuMain menuMain) {
         super(menuMain);
     }

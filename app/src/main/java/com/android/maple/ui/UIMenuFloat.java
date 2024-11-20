@@ -4,36 +4,45 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+
+import androidx.annotation.NonNull;
 
 import com.hjq.window.EasyWindow;
+import com.hjq.window.draggable.BaseDraggable;
+import com.hjq.window.draggable.MovingDraggable;
 
 public class UIMenuFloat extends UIComponent implements IUIMenuFloat {
     EasyWindow<?> m_window;
 
     public UIMenuFloat(UIMenuMain menuMain) {
         super(menuMain);
-        this.m_window = new EasyWindow<>((Activity) menuMain.getContext())
+
+        this.m_window = EasyWindow.with((Activity) menuMain.getContext())
                 .setDraggable()
-                .setGravity(Gravity.START | Gravity.TOP)
-                .setOutsideTouchable(true);
+                .setGravity(Gravity.START | Gravity.CENTER);
+
+
     }
 
-
-//    public Context getContext() {
-//        return super.getContext();
-//    }
 
     @Override
     public Context getContext() {
         return super.getContext();
     }
 
-    public void setContentView(View view) {
-        this.m_window.setContentView(view);
-    }
-
-    public void show() {
-        this.m_window.show();
+    public void changeContentView(@NonNull View view, boolean touchable) {
+        ViewGroup.LayoutParams viewParams = view.getLayoutParams();
+        ViewGroup.LayoutParams mainParams = this.m_window.getWindowParams();
+        mainParams.width = viewParams.width;
+        mainParams.height =viewParams.height;
+        this.m_window.setContentView(view)
+                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        this.m_window.setOutsideTouchable(touchable);
+        if (!this.m_window.isShowing()) {
+            this.m_window.show();
+        }
     }
 
 
