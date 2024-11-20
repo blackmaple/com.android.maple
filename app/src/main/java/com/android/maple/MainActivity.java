@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.maple.gamedto.GameCurrencyDisplayDTO;
+import com.android.maple.ui.UIMenuMain;
 import com.android.maple.view.UIDialogRecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,11 +19,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //  (new UIMenuMain(this)).show();
-        UIDialogRecyclerView<GameCurrencyDisplayDTO> dialogComponent = new UIDialogRecyclerView<>(this);
+          (new UIMenuMain(this)).show();
+     //   UIDialogRecyclerView<GameCurrencyDisplayDTO> dialogComponent = new UIDialogRecyclerView<>(this);
 
-      initCustomView(dialogComponent);
-      setContentView(dialogComponent.getView());
+  //    initCustomView(dialogComponent);
+  //    setContentView(dialogComponent.getView());
     }
 
     private void initCustomView(UIDialogRecyclerView<GameCurrencyDisplayDTO> customView) {

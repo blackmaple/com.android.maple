@@ -3,6 +3,7 @@ package com.android.maple.ui;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 public class UIMenuSelected extends UIComponent {
@@ -26,11 +27,12 @@ public class UIMenuSelected extends UIComponent {
         this.m_ButtonClose = UIResourceManager.createCloseButton(context);
 
 
-        this.m_Layout.addView(this.m_ButtonCurrency);
-        this.m_Layout.addView(this.m_ButtonInventory);
-        this.m_Layout.addView(this.m_ButtonCharacter);
-        this.m_Layout.addView(this.m_ButtonSwitch);
-        this.m_Layout.addView(this.m_ButtonClose);
+
+        this.m_Layout.addView(this.m_ButtonCurrency, 0, this.getButtonLayoutParams());
+        this.m_Layout.addView(this.m_ButtonInventory, 1, this.getButtonLayoutParams());
+        this.m_Layout.addView(this.m_ButtonCharacter, 2, this.getButtonLayoutParams());
+        this.m_Layout.addView(this.m_ButtonSwitch, 3, this.getButtonLayoutParams());
+        this.m_Layout.addView(this.m_ButtonClose, 4, this.getButtonLayoutParams());
     }
 
     public void setOnClickListener_Currency(View.OnClickListener l) {

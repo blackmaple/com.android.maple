@@ -30,7 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO> extends RecyclerView.Adapter<UIRecyclerViewAdapter<TItem>.UIRecyclerViewHolder> {
+public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO>
+        extends RecyclerView.Adapter<UIRecyclerViewAdapter<TItem>.UIRecyclerViewHolder> {
     private final GradientDrawable mTagViewBackground;
     private final LinearLayout.LayoutParams mItemViewParams;
     private final LinearLayout.LayoutParams mButtonParams;
@@ -38,6 +39,7 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO> extends R
     private int mItemHeight;
     private int mTagPadding;
     private int mTagViewHeight;
+    private int mTagViewWidth;
     private int mDescViewTopMargin;
     private int mButtonWidth;
     private int mButtonHeight;
@@ -47,6 +49,7 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO> extends R
     List<TItem> mListSearchDataSource = new ArrayList<>(1024);
 
     private OnItemClickerListener<TItem> mOnItemClickerListener;
+
 
     public UIRecyclerViewAdapter(Context context) {
 
@@ -63,12 +66,13 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO> extends R
 
     private void initDisplaySize(@NonNull Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        mButtonWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, displayMetrics);
-        mButtonHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, displayMetrics);
-        mItemHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 90, displayMetrics);
+        mButtonWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, displayMetrics);
+        mButtonHeight = mButtonWidth + 1 - 1;//(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, displayMetrics);
+        mItemHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, displayMetrics);
         mTagPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14, displayMetrics);
         mDescViewTopMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, displayMetrics);
-        mTagViewHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 28, displayMetrics);
+        mTagViewHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, displayMetrics);
+        mTagViewWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 128, displayMetrics);
     }
 
     @NonNull
@@ -109,7 +113,7 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO> extends R
     @NonNull
     private LinearLayout.LayoutParams createTagViewParams() {
         LinearLayout.LayoutParams tagViewParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
+                mTagViewWidth,
                 mTagViewHeight
         );
         tagViewParams.setMargins(mTagPadding, 0, 0, 0);
@@ -119,15 +123,15 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO> extends R
     @NonNull
     private GradientDrawable createTagViewBackground() {
         GradientDrawable tagViewBackground = new GradientDrawable();
-        tagViewBackground.setShape(GradientDrawable.RECTANGLE);
-        tagViewBackground.setStroke(2, Color.parseColor("#ff669900")); //
-        tagViewBackground.setCornerRadius(12f);
+        tagViewBackground.setShape(GradientDrawable.LINEAR_GRADIENT);
+        tagViewBackground.setStroke(4, UIResourceManager.Color_Green); //
+        tagViewBackground.setCornerRadius(16f);
         return tagViewBackground;
     }
 
 
-    public void setItemClickListener(OnItemClickerListener<TItem> mListener) {
-        this.mOnItemClickerListener = mListener;
+    public void setItemClickListener(OnItemClickerListener<TItem> l) {
+        this.mOnItemClickerListener = l;
     }
 
 
@@ -184,6 +188,18 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO> extends R
 
     public interface OnItemClickerListener<TItem extends GameObjectDisplayDTO> {
         void onItemClick(TItem item);
+    }
+
+    public interface OnCloseListener {
+        void onClose();
+    }
+
+//    public interface OnSearchListener {
+//        void onSearch();
+//    }
+
+    public interface OnLoadListener {
+        void OnLoad();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -246,7 +262,7 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO> extends R
         @NonNull
         private TextView createTitleTextView(Context context) {
             TextView titleView = new TextView(context);
-            titleView.setTextColor(Color.parseColor("#ffffffff"));
+            titleView.setTextColor(Color.WHITE);
             return titleView;
         }
 
@@ -256,7 +272,7 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO> extends R
             tagView.setPadding(mTagPadding, 0, mTagPadding, 0);
             tagView.setLayoutParams(mTagViewParams);
             tagView.setGravity(Gravity.CENTER);
-            tagView.setTextColor(Color.parseColor("#ff669900"));
+            tagView.setTextColor(UIResourceManager.Color_Green);
             tagView.setBackground(mTagViewBackground);
             return tagView;
         }
@@ -266,7 +282,7 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO> extends R
         private TextView createDescTextView(Context context) {
             TextView descView = new TextView(context);
             descView.setLayoutParams(mDescViewParams);
-            descView.setTextColor(Color.parseColor("#ffffffff"));
+            descView.setTextColor(Color.WHITE);
             descView.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
             descView.setEllipsize(TextUtils.TruncateAt.END);
             descView.setMaxLines(2);
@@ -291,8 +307,8 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO> extends R
 
         @NonNull
         private ImageButton createEditButton(Context context) {
-            ImageButton editButton = UIResourceManager.createSwitchButton(context);
-            editButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            ImageButton editButton = UIResourceManager.createEditButton(context);
+
             editButton.setLayoutParams(mButtonParams);
             editButton.setTooltipText("Edit");
             editButton.setOnClickListener(this);
@@ -300,7 +316,6 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO> extends R
         }
 
         @Override
-        @SuppressWarnings("unchecked")
         public void onClick(View view) {
             if (mOnItemClickerListener != null) {
                 Object item = this.mEditButton.getTag();

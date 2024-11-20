@@ -45,6 +45,18 @@ public class UIResourceManager {
             "iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAABAhJREFUeF7t3Ot100AQBeBNJ5SSVAJ0Qil0Ap1AJ5Ah7DkmKJFX0u7MffhvLGdn7uexZWv90HyT7sCDdPUuvhmAOAIDMADxDoiX7wlgAOIdEC/fE8AAxDsgXr4ngAGId0C8fE8AAxDvgHj5ngAGIN4B8fI9AQxAvAPi5XsCGIB4B8TL9wQwAPEOiJfvCWAA4h0QL98TwADEOyBevieAAZTpwIfW2s8yq5m7kDK1VpkA31pr0ZQnAQRR54/ner+21j7Pdbb/6BUARPiPf5caE4AZQQ+/J5OOIBvAbfi9KawIXodfAkEmgK3wWRG8FX46giwA74XPhmAv/FQEGQDuCZ8Fwb3hpyFYDWAkfHQEo+GnIFgJIBrST/f2z0/+vQfaG8Oj4UfVUWucHn4fbdKR+68EEOtTQAATfgSyGgA7AqjwswCwIoALPxMAGwLI8LMBsCCADb8CAHQE0OFXAYCKAD78SgDQEFCEXw0ACgKa8CsCqI6AKvyqAKoioAu/MoBqCCjDrw6gCgLa8BEAZCOgDh8FQBYC+vCRAKxGIBE+GoBVCGTCRwQwG4FU+KgAZiGQCx8ZwNUIJMNHB3AVgnic2Kt35Lb0As4jC9w7JuOawL01jf797IWmcfyRG3z4DBOgB3cGgWz4TADOvhyMIKB45veCGV4CbsObPQmowmebALNfDujCZwUw4+WAMnxmAFcioA2fHcAVCKjDVwFw9EOe6A/aruSRs5k/92U7C3h9RnAm/P5Y1AhYAZz5bH/rWUSLgBHA1eFTTwI2ALPCp0XABGB2+JQIWACsCp8OAQOAM+H3H6c+8pUwxRtDdABnw49f44ogVX697L8zHGQAV4Tff4rtzLeI0JMAFcCV4V/xLSIsAkQAM8KXRYAGYGb4kgiQAKwIXw4BCoCV4UshQACQEb4MguoAMsOXQFAZQIXw6RFUBVApfGoEFQFUDJ8WQTUAlcOnRFAJAEL4dAiqAEAKnwpBBQCI4dMgyAaAHD4FgkwADOHDI8gCwBQ+NIIMAIzhwyJYDYA5fEgEqwH8Gt69+HIA2i5dmGsMVwKIpnx8TvPLIAK08M9OgrhQ9WmwR4fvvhJALHIUAWr4RxEsDT8WuRrACAL08EcRLA8/C8A9CFjCvxdBSviZAN5DwBb+HoK08LMBbCFgDf8tBKnhVwBwi+BTay326vXtWoff2RY/sJ8i9t1EqcvNeBO4VXDfndt366Y2ZcE/j3pL1FoFwIKe+19sdcAAxF0YgAGId0C8fE8AAxDvgHj5ngAGIN4B8fI9AQxAvAPi5XsCGIB4B8TL9wQwAPEOiJfvCWAA4h0QL98TwADEOyBevieAAYh3QLx8TwADEO+AePmeAAYg3gHx8j0BDEC8A+Ll/wanMoGQDitqeAAAAABJRU5ErkJggg==";
 
 
+    static final String Base64Image_Search =
+            "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";
+
+    static final String Base64Image_Edit =
+            "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";
+
+    public static int Color_Gray = Color.parseColor("#475569");
+    public static int Color_Blue = Color.parseColor("#0891b2");
+    public static int Color_Black = Color.parseColor("#333333");
+    public static int Color_Orange = Color.parseColor("#ea580c");
+    public static int Color_Green = Color.parseColor("#059669");
+
     @SuppressLint("ClickableViewAccessibility")
     public static void onTouchChangeButtonColor(ImageButton button, int defColor, int touchColor) {
         setImageButtonColor(button, defColor);
@@ -67,11 +79,29 @@ public class UIResourceManager {
     }
 
     @NonNull
+    public static ImageButton createEditButton(Context context) {
+        Bitmap imageMenu = createBitmap(Base64Image_Edit);
+        ImageButton button = createImageButton(context, imageMenu);
+        button.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        onTouchChangeButtonColor(button, Color_Orange, Color_Blue);
+        return button;
+    }
+
+    @NonNull
+    public static ImageButton createSearchButton(Context context) {
+        Bitmap imageMenu = createBitmap(Base64Image_Search);
+        ImageButton button = createImageButton(context, imageMenu);
+        button.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        onTouchChangeButtonColor(button, Color_Orange, Color_Blue);
+        return button;
+    }
+
+    @NonNull
     public static ImageButton createCloseButton(Context context) {
         Bitmap imageMenu = createBitmap(Base64Image_Close);
         ImageButton button = createImageButton(context, imageMenu);
         button.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        onTouchChangeButtonColor(button, Color.parseColor("#475569"), Color.RED);
+        onTouchChangeButtonColor(button, Color_Orange, Color.RED);
         return button;
     }
 
@@ -79,7 +109,7 @@ public class UIResourceManager {
     public static ImageButton createMenuButton(Context context) {
         Bitmap imageMenu = createBitmap(Base64Image_Menu);
         ImageButton button = createImageButton(context, imageMenu);
-        onTouchChangeButtonColor(button, Color.parseColor("#475569"), Color.parseColor("#0891b2"));
+        onTouchChangeButtonColor(button, Color_Gray, Color_Blue);
         return button;
     }
 
@@ -88,7 +118,7 @@ public class UIResourceManager {
         Bitmap imageMenu = createBitmap(Base64Image_Currency);
 
         ImageButton button = createImageButton(context, imageMenu);
-        onTouchChangeButtonColor(button, Color.parseColor("#475569"), Color.parseColor("#0891b2"));
+        onTouchChangeButtonColor(button, Color_Gray, Color_Blue);
         return button;
     }
 
@@ -96,7 +126,7 @@ public class UIResourceManager {
     public static ImageButton createInventoryButton(Context context) {
         Bitmap imageMenu = createBitmap(Base64Image_Inventory);
         ImageButton button = createImageButton(context, imageMenu);
-        onTouchChangeButtonColor(button, Color.parseColor("#475569"), Color.parseColor("#0891b2"));
+        onTouchChangeButtonColor(button, Color_Gray, Color_Blue);
         return button;
     }
 
@@ -104,7 +134,7 @@ public class UIResourceManager {
     public static ImageButton createCharacterButton(Context context) {
         Bitmap imageMenu = createBitmap(Base64Image_Character);
         ImageButton button = createImageButton(context, imageMenu);
-        onTouchChangeButtonColor(button, Color.parseColor("#475569"), Color.parseColor("#0891b2"));
+        onTouchChangeButtonColor(button, Color_Gray, Color_Blue);
         return button;
     }
 
@@ -112,7 +142,7 @@ public class UIResourceManager {
     public static ImageButton createSwitchButton(Context context) {
         Bitmap imageMenu = createBitmap(Base64Image_Switch);
         ImageButton button = createImageButton(context, imageMenu);
-        onTouchChangeButtonColor(button, Color.parseColor("#475569"), Color.parseColor("#0891b2"));
+        onTouchChangeButtonColor(button, Color_Gray, Color_Blue);
         return button;
     }
 
@@ -137,6 +167,7 @@ public class UIResourceManager {
         imageButton.setImageBitmap(image);
         //  imageButton.setBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
         imageButton.setBackgroundColor(Color.TRANSPARENT);
+        imageButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
         return imageButton;
     }

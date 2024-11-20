@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,45 +20,44 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.maple.gamedto.GameObjectDisplayDTO;
+import com.android.maple.ui.UIComponent;
+import com.android.maple.ui.UIMenuMain;
 import com.android.maple.ui.UIResourceManager;
 
 import java.util.ArrayList;
 
-public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> implements
-        UIRecyclerViewAdapter.OnItemClickerListener<TItem> {
+public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> extends UIComponent implements
+        UIRecyclerViewAdapter.OnItemClickerListener<TItem>,
+        UIRecyclerViewAdapter.OnCloseListener,
+        UIRecyclerViewAdapter.OnLoadListener {
 
     LinearLayout mRootView;
     RecyclerView mRecyclerView;
     UIRecyclerViewAdapter<TItem> mViewAdapter;
 
 
-    public UIDialogRecyclerView(@NonNull Context context) {
-
+    public UIDialogRecyclerView(UIMenuMain main) {
+        super(main);
+        Context context = main.getContext();
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 
         EditText searchEdit = createSearchEdit(context, displayMetrics);
-        searchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_SEARCH) {
-                    UIDialogRecyclerView.this.mViewAdapter.onSearch(searchEdit.getText().toString());
-                }
-                return false;
-            }
-        });
-        ImageButton searchButton = createSearchButton(context);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        searchEdit.setOnEditorActionListener((textView, i, keyEvent) -> {
+            if (i == EditorInfo.IME_ACTION_SEARCH) {
                 UIDialogRecyclerView.this.mViewAdapter.onSearch(searchEdit.getText().toString());
             }
+            return false;
+        });
+        ImageButton refreshButton = createRefreshButton(context);
+        refreshButton.setOnClickListener((view) -> {
+            UIDialogRecyclerView.this.OnLoad();
         });
         ImageButton closeButton = createCloseButton(context);
 
         LinearLayout toolsView = createToolsLinearLayout(context, displayMetrics);
         toolsView.addView(searchEdit, 0, createEditTextLayoutParams(displayMetrics));
         LinearLayout.LayoutParams buttonParams = createButtonLayoutParams(displayMetrics);
-        toolsView.addView(searchButton, 1, buttonParams);
+        toolsView.addView(refreshButton, 1, buttonParams);
         toolsView.addView(closeButton, 2, buttonParams);
 
 
@@ -84,11 +82,11 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> implements
     private LinearLayout createRootLinearLayout(Context context) {
         LinearLayout rootView = new LinearLayout(context);
         rootView.setOrientation(LinearLayout.VERTICAL);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, // 宽度
-                ViewGroup.LayoutParams.MATCH_PARENT // 高度
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
         );
         rootView.setLayoutParams(params);
-        rootView.setBackgroundColor(Color.parseColor("#e0000000"));
+        rootView.setBackgroundColor(UIResourceManager.Color_Black);
         return rootView;
     }
 
@@ -98,7 +96,7 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> implements
         int dividerHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1,
                 // 显示密度
                 displayMetrics); // 分割线高度
-        return new UIDividerItemDecoration(dividerHeight, Color.GRAY);
+        return new UIDividerItemDecoration(dividerHeight, UIResourceManager.Color_Gray);
     }
 
     @NonNull
@@ -163,11 +161,11 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> implements
 
         EditText searchEdit = new EditText(context);
         searchEdit.setHint("Search");
-        searchEdit.setHintTextColor(Color.WHITE);
+        searchEdit.setHintTextColor(Color.GRAY);
         searchEdit.setSingleLine();
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
-        gradientDrawable.setStroke(2, Color.DKGRAY);
+        gradientDrawable.setStroke(2, UIResourceManager.Color_Gray);
         gradientDrawable.setCornerRadius(12f);
         searchEdit.setBackground(gradientDrawable);
         searchEdit.setTextColor(Color.WHITE);
@@ -189,21 +187,22 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> implements
     }
 
     @NonNull
-    private ImageButton createSearchButton(Context context) {
-        ImageButton searchButton = UIResourceManager.createInventoryButton(context);
-
-        searchButton.setTooltipText("Search");
-        searchButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
-
-        return searchButton;
+    private ImageButton createRefreshButton(Context context) {
+        ImageButton refreshButton = UIResourceManager.createSearchButton(context);
+        refreshButton.setTooltipText("Refresh");
+        return refreshButton;
     }
 
     @NonNull
     private ImageButton createCloseButton(Context context) {
         ImageButton closeButton = UIResourceManager.createCloseButton(context);
-        closeButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
         closeButton.setTooltipText("Close");
         return closeButton;
+    }
+
+
+    public View getView() {
+        return this.mRootView;
     }
 
     @Override
@@ -211,8 +210,15 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> implements
 
     }
 
-    public View getView() {
-        return this.mRootView;
+    @Override
+    public void onClose() {
+
     }
+
+    @Override
+    public void OnLoad() {
+
+    }
+
 
 }

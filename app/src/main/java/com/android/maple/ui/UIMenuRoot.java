@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.core.content.ContextCompat;
@@ -25,7 +26,7 @@ public class UIMenuRoot extends UIComponent {
         Context context = menuMain.getContext();
         this.m_Layout = UIResourceManager.createLayout(context);
         this.m_ButtonMenu = UIResourceManager.createMenuButton(context);
-        this.m_Layout.addView(this.m_ButtonMenu);
+        this.m_Layout.addView(this.m_ButtonMenu,0,this.getButtonLayoutParams());
     }
 
     public void setOnClickListener(View.OnClickListener l) {
