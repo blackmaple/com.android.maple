@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
-public class UIMenuRoot extends UIComponent {
+public final class UIMenuRoot extends UIComponent {
 
     final LinearLayout m_Layout;
     final ImageButton m_ButtonMenu;

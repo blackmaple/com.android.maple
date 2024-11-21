@@ -9,5 +9,5 @@ public interface IUIMenuFloat {
 
     void changeContentView(View view,boolean touchable);
 
-
+    boolean postRun(Runnable r);
 }

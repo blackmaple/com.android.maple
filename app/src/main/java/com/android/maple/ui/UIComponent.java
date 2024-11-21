@@ -3,11 +3,15 @@ package com.android.maple.ui;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.LinearLayout;
 
-public class UIComponent {
-    final UIMenuMain m_MenuMain;
-    final LinearLayout.LayoutParams m_ButtonLayoutParams;
+import com.android.maple.service.IUIMessageHandler;
+import com.android.maple.service.MapleService;
+
+public abstract class UIComponent implements IUIMessageHandler {
+    private final UIMenuMain m_MenuMain;
+    private final LinearLayout.LayoutParams m_ButtonLayoutParams;
 
     public UIComponent(UIMenuMain menuMain) {
         this.m_MenuMain = menuMain;
@@ -21,7 +25,7 @@ public class UIComponent {
     }
 
 
-    protected Context getContext() {
+    public Context getContext() {
         return this.m_MenuMain.getContext();
     }
 
@@ -32,7 +36,16 @@ public class UIComponent {
     protected LinearLayout.LayoutParams getButtonLayoutParams() {
         return this.m_ButtonLayoutParams;
     }
-}
 
+    public abstract View getView();
+
+    public boolean postRun(Runnable r) {
+        return this.m_MenuMain.postRun(r);
+    }
+
+    protected MapleService getService() {
+        return this.m_MenuMain.getService();
+    }
+}
 
 

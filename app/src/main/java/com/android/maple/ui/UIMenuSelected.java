@@ -6,7 +6,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-public class UIMenuSelected extends UIComponent {
+public final class UIMenuSelected extends UIComponent {
 
     final LinearLayout m_Layout;
     final ImageButton m_ButtonCharacter;
@@ -34,7 +34,7 @@ public class UIMenuSelected extends UIComponent {
         this.m_Layout.addView(this.m_ButtonSwitch, 3, this.getButtonLayoutParams());
         this.m_Layout.addView(this.m_ButtonClose, 4, this.getButtonLayoutParams());
 
-        this.m_ButtonCharacter.setOnClickListener((view)->this.getMenuMain().changeDialogCurrency());
+        this.m_ButtonCharacter.setOnClickListener((view)->this.getMenuMain().changeDialogCharacter());
         this.m_ButtonCurrency.setOnClickListener((view)->this.getMenuMain().changeDialogCurrency());
         this.m_ButtonInventory.setOnClickListener((view)->this.getMenuMain().changeDialogInventory());
         this.m_ButtonSwitch.setOnClickListener((view)->this.getMenuMain().changeDialogSwitch());

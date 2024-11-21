@@ -6,14 +6,12 @@ import android.graphics.drawable.GradientDrawable;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -50,8 +48,10 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> extends UI
         });
         ImageButton refreshButton = createRefreshButton(context);
         refreshButton.setOnClickListener((view) -> this.OnLoad());
+
         ImageButton closeButton = createCloseButton(context);
         closeButton.setOnClickListener((view) -> this.onClose());
+
         LinearLayout toolsView = createToolsLinearLayout(context, displayMetrics);
         toolsView.addView(searchEdit, 0, createEditTextLayoutParams(displayMetrics));
         LinearLayout.LayoutParams buttonParams = createButtonLayoutParams(displayMetrics);
@@ -61,7 +61,7 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> extends UI
 
         this.mRecyclerView = createRecyclerView(context);
         this.mRecyclerView.addItemDecoration(createItemDecoration(displayMetrics));
-        this.mViewAdapter = new UIRecyclerViewAdapter<TItem>(context);
+        this.mViewAdapter = new UIRecyclerViewAdapter<>(context);
         this.mRecyclerView.swapAdapter(this.mViewAdapter, false);
 
         this.mRootView = createRootLinearLayout(context);

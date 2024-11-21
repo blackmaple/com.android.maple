@@ -10,10 +10,8 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 
 import com.hjq.window.EasyWindow;
-import com.hjq.window.draggable.BaseDraggable;
-import com.hjq.window.draggable.MovingDraggable;
 
-public class UIMenuFloat extends UIComponent implements IUIMenuFloat {
+public final class UIMenuFloat extends UIComponent implements IUIMenuFloat {
     EasyWindow<?> m_window;
 
     public UIMenuFloat(UIMenuMain menuMain) {
@@ -36,7 +34,7 @@ public class UIMenuFloat extends UIComponent implements IUIMenuFloat {
         ViewGroup.LayoutParams viewParams = view.getLayoutParams();
         ViewGroup.LayoutParams mainParams = this.m_window.getWindowParams();
         mainParams.width = viewParams.width;
-        mainParams.height =viewParams.height;
+        mainParams.height = viewParams.height;
         this.m_window.setContentView(view)
                 .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         this.m_window.setOutsideTouchable(touchable);
@@ -46,5 +44,13 @@ public class UIMenuFloat extends UIComponent implements IUIMenuFloat {
     }
 
 
+    @Override
+    public View getView() {
+        return this.m_window.getContentView();
+    }
+
+    public boolean postRun(Runnable r) {
+        return this.m_window.getHandler().post(r);
+    }
 }
 
