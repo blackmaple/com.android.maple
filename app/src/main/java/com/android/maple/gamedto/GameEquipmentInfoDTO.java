@@ -1,5 +1,7 @@
 package com.android.maple.gamedto;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.jetbrains.annotations.Nullable;
 
 /// <summary>
@@ -16,8 +18,10 @@ public class GameEquipmentInfoDTO extends GameObjectDisplayDTO {
     /// 装备属性
     /// </summary>
     @Nullable
+    @SerializedName("equipmentAttributes")
     public GameValueInfoDTO[] EquipmentAttributes;
 
 
+    @SerializedName("canWrite")
     public boolean CanWrite;
 }

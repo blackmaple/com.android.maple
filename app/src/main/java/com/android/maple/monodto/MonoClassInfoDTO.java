@@ -2,6 +2,9 @@ package com.android.maple.monodto;
 
 import androidx.annotation.Nullable;
 
+import kotlinx.coroutines.ObsoleteCoroutinesApi;
+
+@ObsoleteCoroutinesApi
 public class MonoClassInfoDTO extends MonoObjectInfoDTO {
     @Nullable
     public String Namespace;

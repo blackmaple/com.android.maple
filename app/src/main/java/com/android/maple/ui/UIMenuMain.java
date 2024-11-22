@@ -1,10 +1,18 @@
 package com.android.maple.ui;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Toast;
 
+import com.android.maple.MainActivity;
+import com.android.maple.R;
+import com.android.maple.gamedto.GameCurrencyDisplayDTO;
 import com.android.maple.service.MapleService;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 public final class UIMenuMain {
     private final MapleService m_Service;
@@ -19,6 +27,7 @@ public final class UIMenuMain {
     private final UIDialogCharacter m_DialogCharacter;
     private final UIDialogSwitch m_DialogSwitch;
 
+
     public UIMenuMain(Context context) {
         this.m_Service = new MapleService();
         this.m_Context = context;
@@ -32,6 +41,7 @@ public final class UIMenuMain {
         this.m_DialogInventory = new UIDialogInventory(this);
         this.m_DialogCharacter = new UIDialogCharacter(this);
         this.m_DialogSwitch = new UIDialogSwitch(this);
+
 
     }
 
@@ -60,7 +70,13 @@ public final class UIMenuMain {
     }
 
     public void changeMenuSelected() {
-        this.changeContentView(this.m_MenuSelected.getView(), true);
+        UIEditAlertDialog alertDialog = new UIEditAlertDialog(getContext());
+        if (alertDialog.showEditView("Text", LocalDateTime.now().toString())) {
+            Toast.makeText(this.getContext(), "ok", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this.getContext(), "err", Toast.LENGTH_SHORT).show();
+        }
+        //this.changeContentView(this.m_MenuSelected.getView(), true);
     }
 
     public void changeDialogCurrency() {

@@ -2,10 +2,13 @@ package com.android.maple.gamedto;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.jetbrains.annotations.Nullable;
 
 public class GameCurrencyModifyDTO extends GameCurrencyObjectDTO {
     @Nullable
+    @SerializedName("newValue")
     public String NewValue;
 
     public GameCurrencyModifyDTO(@NonNull String session, @NonNull String currencyObject) {

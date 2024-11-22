@@ -23,6 +23,7 @@ import com.android.maple.ui.UIMenuMain;
 import com.android.maple.ui.UIResourceManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> extends UIComponent implements
         UIRecyclerViewAdapter.OnItemClickerListener<TItem>,
@@ -70,7 +71,7 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> extends UI
     }
 
 
-    public void setDatasource(ArrayList<TItem> items) {
+    public final void setDataSource(List<TItem> items) {
         this.mViewAdapter.replaceAll(items);
         this.mRecyclerView.scrollToPosition(0);
 

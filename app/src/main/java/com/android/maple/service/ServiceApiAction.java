@@ -12,13 +12,13 @@ import java.lang.reflect.Type;
 
 public final class ServiceApiAction<T_REQ, T_RES> {
 
-    private final Gson m_JsonObject;
+    private final MapleService m_Service;
     private final Type m_ReqJsonType;
     private final Type m_ResJsonType;
     private ApiActionCallback<T_RES> m_ApiActionCallback;
 
-    public ServiceApiAction(Gson jsonObj, Type req, Type res) {
-        this.m_JsonObject = jsonObj;
+    public ServiceApiAction(MapleService service, Type req, Type res) {
+        this.m_Service = service;
         this.m_ReqJsonType = req;
         this.m_ResJsonType = res;
     }
@@ -39,7 +39,7 @@ public final class ServiceApiAction<T_REQ, T_RES> {
     }
 
 
-    public Boolean onCallback(String json) {
+    public boolean onCallback(String json) {
         try {
 
             if (this.m_ApiActionCallback != null) {
@@ -53,11 +53,16 @@ public final class ServiceApiAction<T_REQ, T_RES> {
         return false;
     }
 
-    public String fromJson(T_REQ data) {
-        return this.m_JsonObject.toJson(data, this.m_ReqJsonType);
+    public boolean apiAction(int actionIndex, T_REQ data) {
+        String json = fromJson(data);
+        return this.m_Service.ApiAction(actionIndex, json);
     }
 
-    public MonoGenericResultDTO<T_RES> toJson(String json) {
-        return this.m_JsonObject.fromJson(json, this.m_ResJsonType);
+    private String fromJson(T_REQ data) {
+        return this.m_Service.getJsonContext().toJson(data, this.m_ReqJsonType);
+    }
+
+    private MonoGenericResultDTO<T_RES> toJson(String json) {
+        return this.m_Service.getJsonContext().fromJson(json, this.m_ResJsonType);
     }
 }

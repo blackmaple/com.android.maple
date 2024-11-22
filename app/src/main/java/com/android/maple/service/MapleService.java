@@ -13,21 +13,25 @@ import java.lang.reflect.Type;
 
 public final class MapleService {
 
-    Gson m_JsonObject;
+    private final Gson m_JsonContext;
 
+    public Gson getJsonContext() {
+        return this.m_JsonContext;
+    }
 
     public MapleService() {
 
-        this.m_JsonObject = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+        this.m_JsonContext = new GsonBuilder()
+                .setFieldNamingStrategy(FieldNamingPolicy.IDENTITY)
                 .create();
 
         Type noneReq = new TypeToken<GameSessionObjectDTO>() {
         }.getType();
         Type noneRes = new TypeToken<MonoGenericResultDTO<GameSessionInfoDTO>>() {
         }.getType();
-        this.m_NoneAction = new ServiceApiAction<>(m_JsonObject, noneReq, noneRes);
+        this.m_NoneAction = new ServiceApiAction<>(this, noneReq, noneRes);
     }
+
 
     /*load lib*/
     static {
@@ -54,8 +58,7 @@ public final class MapleService {
 
     public void NoneAction(int pid) {
         GameSessionObjectDTO dto = new GameSessionObjectDTO(String.valueOf(pid));
-        String json = this.m_NoneAction.fromJson(dto);
-        this.ApiAction(ApiActionIndex.None, json);
+        this.m_NoneAction.apiAction(ApiActionIndex.None, dto);
     }
 
 
