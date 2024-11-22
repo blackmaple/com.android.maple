@@ -1,5 +1,6 @@
 package com.android.maple.service;
 
+import com.android.maple.gamedto.GameCurrencyDisplayDTO;
 import com.android.maple.gamedto.GameSessionInfoDTO;
 import com.android.maple.gamedto.GameSessionObjectDTO;
 import com.android.maple.monodto.ApiActionIndex;
@@ -10,6 +11,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 public final class MapleService {
 
@@ -25,11 +27,9 @@ public final class MapleService {
                 .setFieldNamingStrategy(FieldNamingPolicy.IDENTITY)
                 .create();
 
-        Type noneReq = new TypeToken<GameSessionObjectDTO>() {
-        }.getType();
-        Type noneRes = new TypeToken<MonoGenericResultDTO<GameSessionInfoDTO>>() {
-        }.getType();
-        this.m_NoneAction = new ServiceApiAction<>(this, noneReq, noneRes);
+        this.api_None = createApiNone();
+
+        this.api_GetListCurrencyDisplay = createApiGetListCurrencyDisplay();
     }
 
 
@@ -45,20 +45,27 @@ public final class MapleService {
     /************************************************/
 
     /*callback*/
+    private ServiceApiAction<GameSessionObjectDTO, GameSessionInfoDTO> createApiNone() {
+        Type req = new TypeToken<GameSessionObjectDTO>() {
+        }.getType();
+        Type res = new TypeToken<MonoGenericResultDTO<GameSessionInfoDTO>>() {
+        }.getType();
+        return new ServiceApiAction<>(this, req, res);
+    }
 
-    private final ServiceApiAction<GameSessionObjectDTO, GameSessionInfoDTO> m_NoneAction;
+    private final ServiceApiAction<GameSessionObjectDTO, GameSessionInfoDTO> api_None;
 
-    public ServiceApiAction<GameSessionObjectDTO, GameSessionInfoDTO> getNoneAction() {
-        return this.m_NoneAction;
+    public ServiceApiAction<GameSessionObjectDTO, GameSessionInfoDTO> getApiNone() {
+        return this.api_None;
     }
 
     public boolean None(String json) {
-        return this.m_NoneAction.onCallback(json);
+        return this.api_None.onCallback(json);
     }
 
-    public void NoneAction(int pid) {
-        GameSessionObjectDTO dto = new GameSessionObjectDTO(String.valueOf(pid));
-        this.m_NoneAction.apiAction(ApiActionIndex.None, dto);
+    public void actionNone(int s) {
+        GameSessionObjectDTO dto = new GameSessionObjectDTO(String.valueOf(s));
+        this.api_None.apiAction(ApiActionIndex.None, dto);
     }
 
 
@@ -69,11 +76,36 @@ public final class MapleService {
 //
 //    ICallbackListener<String> m_INFOCallback;
 //    ICallbackListener<String> m_LoadResourceCallback;
-//
+
+    private ServiceApiAction<GameSessionObjectDTO, List<GameCurrencyDisplayDTO>> createApiGetListCurrencyDisplay() {
+        Type req = new TypeToken<GameSessionObjectDTO>() {
+        }.getType();
+        Type res = new TypeToken<MonoGenericResultDTO<List<GameCurrencyDisplayDTO>>>() {
+        }.getType();
+        return new ServiceApiAction<>(this, req, res);
+    }
+
+    private final ServiceApiAction<GameSessionObjectDTO, List<GameCurrencyDisplayDTO>> api_GetListCurrencyDisplay;
+
+    public ServiceApiAction<GameSessionObjectDTO, List<GameCurrencyDisplayDTO>> API_GetListCurrencyDisplay() {
+        return api_GetListCurrencyDisplay;
+    }
+
+    public boolean GetListCurrencyDisplay(String json) {
+        return this.api_GetListCurrencyDisplay.onCallback(json);
+    }
+
+    public void Action_GetListCurrencyDisplay(int s) {
+        GameSessionObjectDTO dto = new GameSessionObjectDTO(String.valueOf(s));
+        this.api_GetListCurrencyDisplay.apiAction(ApiActionIndex.GetListCurrencyDisplay, dto);
+    }
+
+
 //    ICallbackListener<String> m_GetListCurrencyDisplayCallback;
 //    ICallbackListener<String> m_GetCurrencyInfoCallback;
 //    ICallbackListener<String> m_UpdateCurrencyInfoCallback;
-//
+
+
 //    ICallbackListener<String> m_GetListInventoryDisplayCallback;
 //    ICallbackListener<String> m_GetInventoryInfoCallback;
 //    ICallbackListener<String> m_UpdateInventoryInfoCallback;

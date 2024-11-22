@@ -17,7 +17,7 @@ public final class UIDialogCurrency extends UIDialogRecyclerView<GameCurrencyDis
 
     @Override
     public void OnLoad() {
-        this.getService().NoneAction(123);
+        this.getService().actionNone(123);
     }
 
 

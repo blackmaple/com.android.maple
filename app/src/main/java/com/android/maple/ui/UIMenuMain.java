@@ -70,13 +70,7 @@ public final class UIMenuMain {
     }
 
     public void changeMenuSelected() {
-        UIEditAlertDialog alertDialog = new UIEditAlertDialog(getContext());
-        if (alertDialog.showEditView("Text", LocalDateTime.now().toString())) {
-            Toast.makeText(this.getContext(), "ok", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this.getContext(), "err", Toast.LENGTH_SHORT).show();
-        }
-        //this.changeContentView(this.m_MenuSelected.getView(), true);
+        this.changeContentView(this.m_MenuSelected.getView(), false);
     }
 
     public void changeDialogCurrency() {

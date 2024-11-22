@@ -17,34 +17,25 @@ import androidx.annotation.NonNull;
 
 import com.android.maple.MainActivity;
 
-public class UIEditAlertDialog {
-    private final LinearLayout mRootView;
+public class UIEditAlertDialog extends LinearLayout {
+
     private final EditText mEditText;
 
     public UIEditAlertDialog(Context context) {
+        super(context);
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-
+        this.initRootLinearLayout(context, displayMetrics);
         this.mEditText = createValueEdit(context, displayMetrics);
-        this.mRootView = createRootLinearLayout(context, displayMetrics);
-        this.mRootView.addView(mEditText, 0, createEditTextLayoutParams(displayMetrics));
-
-
+        this.addView(this.mEditText, 0, createEditTextLayoutParams(displayMetrics));
     }
 
-    @NonNull
-    private LinearLayout createRootLinearLayout(Context context, DisplayMetrics displayMetrics) {
+
+    private void initRootLinearLayout(Context context, DisplayMetrics displayMetrics) {
 
         int firstViewPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, displayMetrics);
-
-        LinearLayout firstView = new LinearLayout(context);
-        firstView.setOrientation(LinearLayout.HORIZONTAL);
-        firstView.setGravity(Gravity.CENTER);
-
-
-        firstView.setPadding(firstViewPadding, 0, firstViewPadding, 0);
-
-
-        return firstView;
+        this.setOrientation(LinearLayout.HORIZONTAL);
+        this.setGravity(Gravity.CENTER);
+        this.setPadding(firstViewPadding, 0, firstViewPadding, 0);
     }
 
     @NonNull
@@ -79,10 +70,6 @@ public class UIEditAlertDialog {
         return editParams;
     }
 
-
-    public View getView() {
-        return this.mRootView;
-    }
 
     public void setValueAsString(String v) {
         this.mEditText.setText(v);
@@ -120,49 +107,27 @@ public class UIEditAlertDialog {
         return 0;
     }
 
-    public boolean showEditView(String title, String v) {
-
-        UIAlertDialog dialog = new UIAlertDialog(this.mRootView.getContext());
-        dialog.setTitle(title);
+    public void showEditView(String title, String v, OnEditClickerListener l) {
         this.setValueAsString(v);
-        return dialog.show(getView());
+        AlertDialog.Builder dialog = createAlertDialog(this, title);
+        dialog.setPositiveButton("Edit", (d, w) -> l.onEdit(this));
+        dialog.show();
+    }
+
+    private AlertDialog.Builder createAlertDialog(View view, String title) {
+        AlertDialog.Builder inputDialog = new AlertDialog.Builder(view.getContext(), android.R.style.Theme_DeviceDefault_Dialog_Alert);
+        inputDialog.setTitle(title);
+        inputDialog.setView(view);
+        inputDialog.setNeutralButton("Cancel", (d, w) -> {
+          //  d.cancel();
+        });
+        inputDialog.setCancelable(false);
+        return inputDialog;
     }
 
 
-    static class UIAlertDialog {
-        AlertDialog.Builder m_InputDialog;
-
-        boolean m_DialogType;
-
-        public UIAlertDialog(Context context) {
-
-            m_InputDialog = new AlertDialog.Builder(context, android.R.style.Theme_DeviceDefault_Dialog_Alert);
-            m_InputDialog.setPositiveButton("Edit", (d, w) -> {
-                        m_DialogType = true;
-                        d.cancel();
-                    }
-            );
-            m_InputDialog.setNeutralButton("Cancel", (d, w) -> {
-                m_DialogType = false;
-                d.cancel();
-            });
-            m_InputDialog.setCancelable(false);
-
-        }
-
-        public void setTitle(String title) {
-            this.m_InputDialog.setTitle(title);
-        }
-
-
-        public boolean show(View view) {
-            m_DialogType = false;
-            this.m_InputDialog.setView(view);
-            this.m_InputDialog.show();
-            return m_DialogType;
-        }
-
-
+    public interface OnEditClickerListener {
+        void onEdit(UIEditAlertDialog dialog);
     }
 
 }
