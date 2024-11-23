@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,7 +23,7 @@ import com.android.maple.ui.UIComponent;
 import com.android.maple.ui.UIMenuMain;
 import com.android.maple.ui.UIResourceManager;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> extends UIComponent implements
@@ -48,7 +49,7 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> extends UI
             return false;
         });
         ImageButton refreshButton = createRefreshButton(context);
-        refreshButton.setOnClickListener((view) -> this.OnLoad());
+        refreshButton.setOnClickListener((view) -> this.onLoadData());
 
         ImageButton closeButton = createCloseButton(context);
         closeButton.setOnClickListener((view) -> this.onClose());
@@ -205,6 +206,19 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> extends UI
         return this.mRootView;
     }
 
+    public void replaceAll(TItem[] items) {
+        this.mViewAdapter.replaceAll(Arrays.asList(items));
+    }
+
+    public void replaceAll(List<TItem> items) {
+        this.mViewAdapter.replaceAll(items);
+    }
+
+    @Nullable
+    public TItem findFirst(String objId) {
+        return this.mViewAdapter.findFirst(objId);
+    }
+
     @Override
     public void onItemClick(TItem tItem) {
 
@@ -216,7 +230,7 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> extends UI
     }
 
     @Override
-    public void OnLoad() {
+    public void onLoadData() {
 
     }
 

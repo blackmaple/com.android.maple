@@ -4,47 +4,44 @@ import androidx.annotation.Nullable;
 
 import com.android.maple.monodto.MonoGenericResultDTO;
 import com.android.maple.monodto.MonoResultDTO;
-import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 
-public final class ServiceApiAction<T_REQ, T_RES> {
+public class ServiceVoidApiAction<T_RES> {
 
-    private final MapleService m_Service;
-    private final Type m_ReqJsonType;
-    private final Type m_ResJsonType;
-    private ApiActionCallback<T_RES> m_ApiActionCallback;
+    protected final MapleService m_Service;
+    protected final Type m_ResJsonType;
+    protected UIApiActionCallback<T_RES> m_ApiActionCallback;
+    protected int m_ActionIndex;
 
-    public ServiceApiAction(MapleService service, Type req, Type res) {
+    public ServiceVoidApiAction(MapleService service, int actionIndex, Type res) {
         this.m_Service = service;
-        this.m_ReqJsonType = req;
+        this.m_ActionIndex = actionIndex;
         this.m_ResJsonType = res;
     }
 
-    public void setApiActionCallback(ApiActionCallback<T_RES> l) {
+    public void setApiActionCallback(UIApiActionCallback<T_RES> l) {
         this.m_ApiActionCallback = l;
     }
 
     public void setApiActionCallback(@NotNull IUIMessageHandler handler,
                                      @NotNull IApiActionCallbackListener<T_RES> s,
                                      @Nullable IApiActionCallbackListener<MonoResultDTO> e) {
-        setApiActionCallback(new ApiActionCallback<>(handler, s, e));
+        setApiActionCallback(new UIApiActionCallback<>(handler, s, e));
     }
 
     public void setApiActionCallback(@NotNull IUIMessageHandler handler,
                                      @NotNull IApiActionCallbackListener<T_RES> s) {
-        setApiActionCallback(new ApiActionCallback<>(handler, s));
+        setApiActionCallback(new UIApiActionCallback<>(handler, s));
     }
 
 
     public boolean onCallback(String json) {
         try {
-
             if (this.m_ApiActionCallback != null) {
                 MonoGenericResultDTO<T_RES> data = toJson(json);
-
                 return this.m_ApiActionCallback.onCallback(data);
             }
         } catch (Exception ex) {
@@ -53,13 +50,8 @@ public final class ServiceApiAction<T_REQ, T_RES> {
         return false;
     }
 
-    public boolean apiAction(int actionIndex, T_REQ data) {
-        String json = fromJson(data);
-        return this.m_Service.ApiAction(actionIndex, json);
-    }
-
-    private String fromJson(T_REQ data) {
-        return this.m_Service.getJsonContext().toJson(data, this.m_ReqJsonType);
+    public boolean apiAction() {
+        return this.m_Service.ApiAction(this.m_ActionIndex, "");
     }
 
     private MonoGenericResultDTO<T_RES> toJson(String json) {

@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import com.android.maple.service.MapleService;
+
 public final class UIMenuRoot extends UIComponent {
 
     final LinearLayout m_Layout;
@@ -28,6 +30,10 @@ public final class UIMenuRoot extends UIComponent {
         this.m_ButtonMenu = UIResourceManager.createMenuButton(context);
         this.m_Layout.addView(this.m_ButtonMenu, 0, this.getButtonLayoutParams());
         this.m_ButtonMenu.setOnClickListener((view) -> this.getMenuMain().changeMenuSelected());
+
+
+
+
     }
 
 

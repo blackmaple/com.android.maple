@@ -1,17 +1,29 @@
 package com.android.maple.service;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.android.maple.gamedto.GameCurrencyDisplayDTO;
+import com.android.maple.gamedto.GameCurrencyInfoDTO;
+import com.android.maple.gamedto.GameCurrencyModifyDTO;
+import com.android.maple.gamedto.GameCurrencyObjectDTO;
+import com.android.maple.gamedto.GameInventoryDisplayDTO;
+import com.android.maple.gamedto.GameInventoryInfoDTO;
+import com.android.maple.gamedto.GameInventoryModifyDTO;
+import com.android.maple.gamedto.GameInventoryObjectDTO;
 import com.android.maple.gamedto.GameSessionInfoDTO;
 import com.android.maple.gamedto.GameSessionObjectDTO;
 import com.android.maple.monodto.ApiActionIndex;
 import com.android.maple.monodto.MonoGenericResultDTO;
+import com.android.maple.monodto.MonoResultDTO;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.Type;
-import java.util.List;
 
 public final class MapleService {
 
@@ -26,10 +38,6 @@ public final class MapleService {
         this.m_JsonContext = new GsonBuilder()
                 .setFieldNamingStrategy(FieldNamingPolicy.IDENTITY)
                 .create();
-
-        this.api_None = createApiNone();
-
-        this.api_GetListCurrencyDisplay = createApiGetListCurrencyDisplay();
     }
 
 
@@ -42,30 +50,37 @@ public final class MapleService {
 
     public native boolean ApiAction(int actionIndex, String json);
 
-    /************************************************/
 
-    /*callback*/
-    private ServiceApiAction<GameSessionObjectDTO, GameSessionInfoDTO> createApiNone() {
-        Type req = new TypeToken<GameSessionObjectDTO>() {
-        }.getType();
+    /***ApiActionIndex.None***/
+    @NonNull
+    private ServiceVoidApiAction<GameSessionInfoDTO> createApiNone() {
         Type res = new TypeToken<MonoGenericResultDTO<GameSessionInfoDTO>>() {
         }.getType();
-        return new ServiceApiAction<>(this, req, res);
+        return new ServiceVoidApiAction<>(this, ApiActionIndex.None, res);
     }
 
-    private final ServiceApiAction<GameSessionObjectDTO, GameSessionInfoDTO> api_None;
-
-    public ServiceApiAction<GameSessionObjectDTO, GameSessionInfoDTO> getApiNone() {
-        return this.api_None;
-    }
+    private final ServiceVoidApiAction<GameSessionInfoDTO> api_None = createApiNone();
 
     public boolean None(String json) {
         return this.api_None.onCallback(json);
     }
 
-    public void actionNone(int s) {
-        GameSessionObjectDTO dto = new GameSessionObjectDTO(String.valueOf(s));
-        this.api_None.apiAction(ApiActionIndex.None, dto);
+    public boolean actionNone() {
+
+        return this.api_None.apiAction();
+    }
+
+    public void callbackNone(
+            @NotNull IUIMessageHandler handler,
+            @NotNull IApiActionCallbackListener<GameSessionInfoDTO> s,
+            @Nullable IApiActionCallbackListener<MonoResultDTO> e) {
+        this.api_None.setApiActionCallback(new UIApiActionCallback<>(handler, s, e));
+    }
+
+    public void callbackNone(
+            @NotNull IUIMessageHandler handler,
+            @NotNull IApiActionCallbackListener<GameSessionInfoDTO> s) {
+        this.api_None.setApiActionCallback(new UIApiActionCallback<>(handler, s));
     }
 
 
@@ -73,42 +88,265 @@ public final class MapleService {
 //    ICallbackListener<String> m_EnumClassesCallback;
 //    ICallbackListener<String> m_EnumObjectsCallback;
 //    ICallbackListener<String> m_EnumClassDetailCallback;
-//
-//    ICallbackListener<String> m_INFOCallback;
+
+    /***ApiActionIndex.INFO***/
+    @NonNull
+    private ServiceVoidApiAction<GameSessionInfoDTO> createApiINFO() {
+        Type res = new TypeToken<MonoGenericResultDTO<GameSessionInfoDTO>>() {
+        }.getType();
+        return new ServiceVoidApiAction<>(this, ApiActionIndex.INFO, res);
+    }
+
+    private final ServiceVoidApiAction<GameSessionInfoDTO> api_INFO
+            = createApiINFO();
+
+    public boolean INFO(String json) {
+        return this.api_INFO.onCallback(json);
+    }
+
+    public void actionINFO() {
+        this.api_INFO.apiAction();
+    }
+
+    public void callbackINFO(
+            @NotNull IUIMessageHandler handler,
+            @NotNull IApiActionCallbackListener<GameSessionInfoDTO> s,
+            @Nullable IApiActionCallbackListener<MonoResultDTO> e) {
+        this.api_INFO.setApiActionCallback(new UIApiActionCallback<>(handler, s, e));
+    }
+
+    public void callbackINFO(
+            @NotNull IUIMessageHandler handler,
+            @NotNull IApiActionCallbackListener<GameSessionInfoDTO> s) {
+        this.api_INFO.setApiActionCallback(new UIApiActionCallback<>(handler, s));
+    }
+
+    private GameSessionInfoDTO m_SessionInfoDTO;
+
+    public void setGameSessionInfoDTO(@NotNull GameSessionInfoDTO dto) {
+        this.m_SessionInfoDTO = dto;
+    }
+
 //    ICallbackListener<String> m_LoadResourceCallback;
 
-    private ServiceApiAction<GameSessionObjectDTO, List<GameCurrencyDisplayDTO>> createApiGetListCurrencyDisplay() {
+    /***ApiActionIndex.GetListCurrencyDisplay***/
+    @NonNull
+    private ServiceObjectApiAction<GameSessionObjectDTO, GameCurrencyDisplayDTO[]> createApiGetListCurrencyDisplay() {
         Type req = new TypeToken<GameSessionObjectDTO>() {
         }.getType();
-        Type res = new TypeToken<MonoGenericResultDTO<List<GameCurrencyDisplayDTO>>>() {
+        Type res = new TypeToken<MonoGenericResultDTO<GameCurrencyDisplayDTO[]>>() {
         }.getType();
-        return new ServiceApiAction<>(this, req, res);
+        return new ServiceObjectApiAction<>(this, ApiActionIndex.GetListCurrencyDisplay, req, res);
     }
 
-    private final ServiceApiAction<GameSessionObjectDTO, List<GameCurrencyDisplayDTO>> api_GetListCurrencyDisplay;
-
-    public ServiceApiAction<GameSessionObjectDTO, List<GameCurrencyDisplayDTO>> API_GetListCurrencyDisplay() {
-        return api_GetListCurrencyDisplay;
-    }
+    private final ServiceObjectApiAction<GameSessionObjectDTO, GameCurrencyDisplayDTO[]> api_GetListCurrencyDisplay
+            = createApiGetListCurrencyDisplay();
 
     public boolean GetListCurrencyDisplay(String json) {
         return this.api_GetListCurrencyDisplay.onCallback(json);
     }
 
-    public void Action_GetListCurrencyDisplay(int s) {
-        GameSessionObjectDTO dto = new GameSessionObjectDTO(String.valueOf(s));
-        this.api_GetListCurrencyDisplay.apiAction(ApiActionIndex.GetListCurrencyDisplay, dto);
+    public void actionGetListCurrencyDisplay() {
+        GameSessionObjectDTO dto = new GameSessionObjectDTO(this.m_SessionInfoDTO.ObjectId);
+        this.api_GetListCurrencyDisplay.apiAction(dto);
+    }
+
+    public void callbackGetListCurrencyDisplay(
+            @NotNull IUIMessageHandler handler,
+            @NotNull IApiActionCallbackListener<GameCurrencyDisplayDTO[]> s,
+            @Nullable IApiActionCallbackListener<MonoResultDTO> e) {
+        this.api_GetListCurrencyDisplay.setApiActionCallback(new UIApiActionCallback<>(handler, s, e));
+    }
+
+    public void callbackGetListCurrencyDisplay(
+            @NotNull IUIMessageHandler handler,
+            @NotNull IApiActionCallbackListener<GameCurrencyDisplayDTO[]> s) {
+        this.api_GetListCurrencyDisplay.setApiActionCallback(new UIApiActionCallback<>(handler, s));
+    }
+
+    /***ApiActionIndex.GetCurrencyInfo***/
+    @NonNull
+    private ServiceObjectApiAction<GameCurrencyObjectDTO, GameCurrencyInfoDTO> createApiGetCurrencyInfo() {
+        Type req = new TypeToken<GameCurrencyObjectDTO>() {
+        }.getType();
+        Type res = new TypeToken<MonoGenericResultDTO<GameCurrencyInfoDTO>>() {
+        }.getType();
+
+        return new ServiceObjectApiAction<>(this, ApiActionIndex.GetCurrencyInfo, req, res);
+    }
+
+    private final ServiceObjectApiAction<GameCurrencyObjectDTO, GameCurrencyInfoDTO> api_GetCurrencyInfo
+            = createApiGetCurrencyInfo();
+
+    public boolean GetCurrencyInfo(String json) {
+        return this.api_GetCurrencyInfo.onCallback(json);
+    }
+
+    public boolean actionGetCurrencyInfo(@NotNull String currencyObj) {
+        GameCurrencyObjectDTO dto = new GameCurrencyObjectDTO(this.m_SessionInfoDTO.ObjectId, currencyObj);
+        return this.api_GetCurrencyInfo.apiAction(dto);
+    }
+
+    public void callbackGetCurrencyInfo(
+            @NotNull IUIMessageHandler handler,
+            @NotNull IApiActionCallbackListener<GameCurrencyInfoDTO> s,
+            @Nullable IApiActionCallbackListener<MonoResultDTO> e) {
+        this.api_GetCurrencyInfo.setApiActionCallback(new UIApiActionCallback<>(handler, s, e));
+    }
+
+    public void callbackGetCurrencyInfo(
+            @NotNull IUIMessageHandler handler,
+            @NotNull IApiActionCallbackListener<GameCurrencyInfoDTO> s) {
+        this.api_GetCurrencyInfo.setApiActionCallback(new UIApiActionCallback<>(handler, s));
     }
 
 
-//    ICallbackListener<String> m_GetListCurrencyDisplayCallback;
-//    ICallbackListener<String> m_GetCurrencyInfoCallback;
-//    ICallbackListener<String> m_UpdateCurrencyInfoCallback;
+    /***ApiActionIndex.UpdateCurrencyInfo***/
+    @NonNull
+    private ServiceObjectApiAction<GameCurrencyModifyDTO, GameCurrencyInfoDTO> createApiUpdateCurrencyInfo() {
+        Type req = new TypeToken<GameCurrencyModifyDTO>() {
+        }.getType();
+        Type res = new TypeToken<MonoGenericResultDTO<GameCurrencyInfoDTO>>() {
+        }.getType();
+
+        return new ServiceObjectApiAction<>(this, ApiActionIndex.UpdateCurrencyInfo, req, res);
+    }
+
+    private final ServiceObjectApiAction<GameCurrencyModifyDTO, GameCurrencyInfoDTO> api_UpdateCurrencyInfo
+            = createApiUpdateCurrencyInfo();
+
+    public boolean UpdateCurrencyInfo(String json) {
+        return this.api_UpdateCurrencyInfo.onCallback(json);
+    }
+
+    public void actionUpdateCurrencyInfo(@NotNull String currencyObj, GameCurrencyDisplayDTO displayDTO, String newValue) {
+        GameCurrencyModifyDTO dto = new GameCurrencyModifyDTO(this.m_SessionInfoDTO.ObjectId, currencyObj);
+        dto.NewValue = newValue;
+        this.api_UpdateCurrencyInfo.apiAction(dto);
+    }
+
+    public void callbackUpdateCurrencyInfo(
+            @NotNull IUIMessageHandler handler,
+            @NotNull IApiActionCallbackListener<GameCurrencyInfoDTO> s,
+            @Nullable IApiActionCallbackListener<MonoResultDTO> e) {
+        this.api_UpdateCurrencyInfo.setApiActionCallback(new UIApiActionCallback<>(handler, s, e));
+    }
+
+    public void callbackUpdateCurrencyInfo(
+            @NotNull IUIMessageHandler handler,
+            @NotNull IApiActionCallbackListener<GameCurrencyInfoDTO> s) {
+        this.api_UpdateCurrencyInfo.setApiActionCallback(new UIApiActionCallback<>(handler, s));
+    }
 
 
-//    ICallbackListener<String> m_GetListInventoryDisplayCallback;
-//    ICallbackListener<String> m_GetInventoryInfoCallback;
-//    ICallbackListener<String> m_UpdateInventoryInfoCallback;
+    /***ApiActionIndex.GetListInventoryDisplay***/
+    @NonNull
+    private ServiceObjectApiAction<GameSessionObjectDTO, GameInventoryDisplayDTO[]> createApiGetListInventoryDisplay() {
+        Type req = new TypeToken<GameSessionObjectDTO>() {
+        }.getType();
+        Type res = new TypeToken<MonoGenericResultDTO<GameInventoryDisplayDTO[]>>() {
+        }.getType();
+
+        return new ServiceObjectApiAction<>(this, ApiActionIndex.GetListInventoryDisplay, req, res);
+    }
+
+    private final ServiceObjectApiAction<GameSessionObjectDTO, GameInventoryDisplayDTO[]> api_GetListInventoryDisplay
+            = createApiGetListInventoryDisplay();
+
+    public boolean GetListInventoryDisplay(String json) {
+        return this.api_GetListInventoryDisplay.onCallback(json);
+    }
+
+    public void actionGetListInventoryDisplay() {
+        GameSessionObjectDTO dto = new GameSessionObjectDTO(this.m_SessionInfoDTO.ObjectId);
+        this.api_GetListInventoryDisplay.apiAction(dto);
+    }
+
+    public void callbackGetListInventoryDisplay(
+            @NotNull IUIMessageHandler handler,
+            @NotNull IApiActionCallbackListener<GameInventoryDisplayDTO[]> s,
+            @Nullable IApiActionCallbackListener<MonoResultDTO> e) {
+        this.api_GetListInventoryDisplay.setApiActionCallback(new UIApiActionCallback<>(handler, s, e));
+    }
+
+    public void callbackGetListInventoryDisplay(
+            @NotNull IUIMessageHandler handler,
+            @NotNull IApiActionCallbackListener<GameInventoryDisplayDTO[]> s) {
+        this.api_GetListInventoryDisplay.setApiActionCallback(new UIApiActionCallback<>(handler, s));
+    }
+
+    /***ApiActionIndex.GetInventoryInfo***/
+    @NonNull
+    private ServiceObjectApiAction<GameInventoryObjectDTO, GameInventoryInfoDTO> createApiGetInventoryInfo() {
+        Type req = new TypeToken<GameInventoryObjectDTO>() {
+        }.getType();
+        Type res = new TypeToken<MonoGenericResultDTO<GameInventoryInfoDTO>>() {
+        }.getType();
+
+        return new ServiceObjectApiAction<>(this, ApiActionIndex.GetInventoryInfo, req, res);
+    }
+
+    private final ServiceObjectApiAction<GameInventoryObjectDTO, GameInventoryInfoDTO> api_GetInventoryInfo
+            = createApiGetInventoryInfo();
+
+    public boolean GetInventoryInfo(String json) {
+        return this.api_GetInventoryInfo.onCallback(json);
+    }
+
+    public void actionGetInventoryInfo(@NotNull String inventoryObj) {
+        GameInventoryObjectDTO dto = new GameInventoryObjectDTO(this.m_SessionInfoDTO.ObjectId, inventoryObj);
+        this.api_GetInventoryInfo.apiAction(dto);
+    }
+
+    public void callbackGetInventoryInfo(
+            @NotNull IUIMessageHandler handler,
+            @NotNull IApiActionCallbackListener<GameInventoryInfoDTO> s,
+            @Nullable IApiActionCallbackListener<MonoResultDTO> e) {
+        this.api_GetInventoryInfo.setApiActionCallback(new UIApiActionCallback<>(handler, s, e));
+    }
+
+    public void callbackGetInventoryInfo(
+            @NotNull IUIMessageHandler handler,
+            @NotNull IApiActionCallbackListener<GameInventoryInfoDTO> s) {
+        this.api_GetInventoryInfo.setApiActionCallback(new UIApiActionCallback<>(handler, s));
+    }
+
+    /***ApiActionIndex.UpdateInventoryInfo***/
+    @NonNull
+    private ServiceObjectApiAction<GameInventoryModifyDTO, GameInventoryInfoDTO> createApiUpdateInventoryInfo() {
+        Type req = new TypeToken<GameInventoryModifyDTO>() {
+        }.getType();
+        Type res = new TypeToken<MonoGenericResultDTO<GameInventoryInfoDTO>>() {
+        }.getType();
+
+        return new ServiceObjectApiAction<>(this, ApiActionIndex.UpdateInventoryInfo, req, res);
+    }
+
+    private final ServiceObjectApiAction<GameInventoryModifyDTO, GameInventoryInfoDTO> api_UpdateInventoryInfo
+            = createApiUpdateInventoryInfo();
+
+    public boolean UpdateInventoryInfo(String json) {
+        return this.api_UpdateInventoryInfo.onCallback(json);
+    }
+
+    public void actionUpdateInventoryInfo(@NotNull String inventoryObj, String newValue) {
+        GameInventoryModifyDTO dto = new GameInventoryModifyDTO(this.m_SessionInfoDTO.ObjectId, inventoryObj);
+        dto.NewValue = newValue;
+        this.api_UpdateInventoryInfo.apiAction(dto);
+    }
+
+    public void callbackUpdateInventoryInfo(
+            @NotNull IUIMessageHandler handler,
+            @NotNull IApiActionCallbackListener<GameInventoryInfoDTO> s,
+            @Nullable IApiActionCallbackListener<MonoResultDTO> e) {
+        this.api_UpdateInventoryInfo.setApiActionCallback(new UIApiActionCallback<>(handler, s, e));
+    }
+
+    public void callbackUpdateInventoryInfo(
+            @NotNull IUIMessageHandler handler,
+            @NotNull IApiActionCallbackListener<GameInventoryInfoDTO> s) {
+        this.api_UpdateInventoryInfo.setApiActionCallback(new UIApiActionCallback<>(handler, s));
+    }
 //
 //    ICallbackListener<String> m_GetListCharacterDisplayCallback;
 //

@@ -51,8 +51,18 @@ public final class UIMenuMain {
 
     public void show() {
         this.changeContentView(this.m_MenuRoot.getView(), true);
-
+        this.m_Service.callbackINFO(this.m_MenuRoot, (s) ->
+                {
+                    this.m_Service.setGameSessionInfoDTO(s);
+                    Toast.makeText(this.getContext(), "LOAD GAME:" + s.DisplayName, Toast.LENGTH_LONG).show();
+                },
+                (e) ->
+                {
+                    Toast.makeText(this.getContext(), "LOAD ERR:" + e.MSG, Toast.LENGTH_LONG).show();
+                });
+        this.m_Service.actionINFO();
     }
+
 
     public void changeContentView(View view, boolean full) {
         this.m_MenuFloat.changeContentView(view, full);

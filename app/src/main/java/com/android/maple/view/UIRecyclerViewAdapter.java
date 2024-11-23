@@ -11,7 +11,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -28,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO>
@@ -63,6 +63,13 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO>
         this.mTagViewBackground = createTagViewBackground();
 
     }
+
+    @Nullable
+    public TItem findFirst(String objId) {
+        return this.mListAllDataSource.stream().filter(p -> p.ObjectId.equals(objId)).findFirst().orElse(null);
+
+    }
+
 
     private void initDisplaySize(@NonNull Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -141,6 +148,7 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO>
         return new UIRecyclerViewHolder(createRootLinearLayout(parent.getContext()));
     }
 
+    @NonNull
     private LinearLayout createRootLinearLayout(Context context) {
         LinearLayout rootView = new LinearLayout(context);
         rootView.setPadding(mTagPadding, 0, mTagPadding, 0);
@@ -199,7 +207,7 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO>
 //    }
 
     public interface OnLoadListener {
-        void OnLoad();
+        void onLoadData();
     }
 
     @SuppressLint("NotifyDataSetChanged")
