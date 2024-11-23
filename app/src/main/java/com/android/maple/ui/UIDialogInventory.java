@@ -4,8 +4,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.android.maple.gamedto.GameCurrencyDisplayDTO;
-import com.android.maple.gamedto.GameCurrencyInfoDTO;
 import com.android.maple.gamedto.GameInventoryDisplayDTO;
 import com.android.maple.gamedto.GameInventoryInfoDTO;
 import com.android.maple.service.MapleService;
@@ -46,9 +44,7 @@ public final class UIDialogInventory extends UIDialogRecyclerView<GameInventoryD
         if (displayDTO != null) {
             UIEditAlertDialog editAlertDialog = new UIEditAlertDialog(this.getContext());
             editAlertDialog.showEditView(displayDTO.DisplayName, callbackDTO.DisplayValue, (e) ->
-            {
-                this.getService().actionUpdateInventoryInfo(e.getValueAsString(), callbackDTO.ObjectId);
-            });
+                    this.getService().actionUpdateInventoryInfo(e.getValueAsString(), callbackDTO.ObjectId));
         } else {
             Toast.makeText(this.getContext(), "NOT FOUND:" + callbackDTO.ObjectId, Toast.LENGTH_SHORT).show();
         }

@@ -1,18 +1,10 @@
 package com.android.maple.ui;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
-import com.android.maple.MainActivity;
-import com.android.maple.R;
-import com.android.maple.gamedto.GameCurrencyDisplayDTO;
 import com.android.maple.service.MapleService;
-
-import java.time.LocalDateTime;
-import java.util.Date;
 
 public final class UIMenuMain {
     private final MapleService m_Service;
@@ -57,9 +49,7 @@ public final class UIMenuMain {
                     Toast.makeText(this.getContext(), "LOAD GAME:" + s.DisplayName, Toast.LENGTH_LONG).show();
                 },
                 (e) ->
-                {
-                    Toast.makeText(this.getContext(), "LOAD ERR:" + e.MSG, Toast.LENGTH_LONG).show();
-                });
+                        Toast.makeText(this.getContext(), "LOAD ERR:" + e.MSG, Toast.LENGTH_LONG).show());
         this.m_Service.actionINFO();
     }
 

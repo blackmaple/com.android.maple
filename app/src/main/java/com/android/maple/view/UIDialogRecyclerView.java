@@ -64,6 +64,7 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> extends UI
         this.mRecyclerView = createRecyclerView(context);
         this.mRecyclerView.addItemDecoration(createItemDecoration(displayMetrics));
         this.mViewAdapter = new UIRecyclerViewAdapter<>(context);
+        this.mViewAdapter.setItemClickListener(this);
         this.mRecyclerView.swapAdapter(this.mViewAdapter, false);
 
         this.mRootView = createRootLinearLayout(context);
