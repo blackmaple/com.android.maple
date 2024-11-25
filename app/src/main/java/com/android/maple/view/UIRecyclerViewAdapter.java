@@ -69,6 +69,13 @@ public class UIRecyclerViewAdapter<TItem extends GameObjectDisplayDTO>
 
     }
 
+    @Nullable
+    public TItem findFirst(String objId, String category) {
+        return this.mListAllDataSource.stream().filter(p -> p.ObjectId.equals(objId)
+                && category.equals(p.DisplayCategory)).findFirst().orElse(null);
+
+    }
+
 
     private void initDisplaySize(@NonNull Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();

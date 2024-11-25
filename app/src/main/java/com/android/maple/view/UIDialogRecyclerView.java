@@ -72,7 +72,6 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> extends UI
         this.mRootView.addView(mRecyclerView, 1, createRecyclerViewLayoutParams());
 
 
-
     }
 
 
@@ -222,6 +221,12 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> extends UI
     public TItem findFirst(String objId) {
         return this.mViewAdapter.findFirst(objId);
     }
+
+    @Nullable
+    public TItem findFirst(String objId, String category) {
+        return this.mViewAdapter.findFirst(objId, category);
+    }
+
 
     @Override
     public void onItemClick(TItem tItem) {

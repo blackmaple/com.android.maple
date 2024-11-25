@@ -41,7 +41,6 @@ public final class MapleService {
     }
 
 
-
     public native boolean TestAction(String txt);
 
     public native boolean ApiAction(int actionIndex, String json);
@@ -220,8 +219,8 @@ public final class MapleService {
         return this.api_UpdateCurrencyInfo.onCallback(json);
     }
 
-    public void actionUpdateCurrencyInfo(@NotNull String currencyObj, GameCurrencyDisplayDTO displayDTO, String newValue) {
-        GameCurrencyModifyDTO dto = new GameCurrencyModifyDTO(this.m_SessionInfoDTO.ObjectId, currencyObj);
+    public void actionUpdateCurrencyInfo(@NonNull GameCurrencyDisplayDTO displayDTO, String newValue) {
+        GameCurrencyModifyDTO dto = new GameCurrencyModifyDTO(this.m_SessionInfoDTO.ObjectId, displayDTO.ObjectId);
         dto.NewValue = newValue;
         this.api_UpdateCurrencyInfo.apiAction(dto);
     }
@@ -294,8 +293,9 @@ public final class MapleService {
         return this.api_GetInventoryInfo.onCallback(json);
     }
 
-    public void actionGetInventoryInfo(@NotNull String inventoryObj) {
-        GameInventoryObjectDTO dto = new GameInventoryObjectDTO(this.m_SessionInfoDTO.ObjectId, inventoryObj);
+    public void actionGetInventoryInfo(@NotNull GameInventoryDisplayDTO displayDTO) {
+        GameInventoryObjectDTO dto = new GameInventoryObjectDTO(this.m_SessionInfoDTO.ObjectId, displayDTO.ObjectId);
+        dto.InventoryCategory = displayDTO.DisplayCategory;
         this.api_GetInventoryInfo.apiAction(dto);
     }
 
@@ -330,8 +330,9 @@ public final class MapleService {
         return this.api_UpdateInventoryInfo.onCallback(json);
     }
 
-    public void actionUpdateInventoryInfo(@NotNull String inventoryObj, String newValue) {
-        GameInventoryModifyDTO dto = new GameInventoryModifyDTO(this.m_SessionInfoDTO.ObjectId, inventoryObj);
+    public void actionUpdateInventoryInfo(@NotNull GameInventoryDisplayDTO displayDTO, String newValue) {
+        GameInventoryModifyDTO dto = new GameInventoryModifyDTO(this.m_SessionInfoDTO.ObjectId, displayDTO.ObjectId);
+        dto.InventoryCategory = displayDTO.DisplayCategory;
         dto.NewValue = newValue;
         this.api_UpdateInventoryInfo.apiAction(dto);
     }

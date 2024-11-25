@@ -35,7 +35,7 @@ public final class UIDialogInventory extends UIDialogRecyclerView<GameInventoryD
 
     @Override
     public void onItemClick(@NonNull GameInventoryDisplayDTO gameInventoryDisplayDTO) {
-        this.getService().actionGetInventoryInfo(gameInventoryDisplayDTO.ObjectId);
+        this.getService().actionGetInventoryInfo(gameInventoryDisplayDTO);
     }
 
     private void callbackItemClick(@NonNull GameInventoryInfoDTO callbackDTO) {
@@ -43,7 +43,7 @@ public final class UIDialogInventory extends UIDialogRecyclerView<GameInventoryD
         if (displayDTO != null) {
             UIEditAlertDialog editAlertDialog = new UIEditAlertDialog(this.getContext());
             editAlertDialog.showEditView(displayDTO.DisplayName, callbackDTO.DisplayValue, (e) ->
-                    this.getService().actionUpdateInventoryInfo(e.getValueAsString(), callbackDTO.ObjectId));
+                    this.getService().actionUpdateInventoryInfo(displayDTO, e.getValueAsString()));
         } else {
             Toast.makeText(this.getContext(), "NOT FOUND:" + callbackDTO.ObjectId, Toast.LENGTH_SHORT).show();
         }

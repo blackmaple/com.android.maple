@@ -23,7 +23,6 @@ public final class UIDialogCurrency extends UIDialogRecyclerView<GameCurrencyDis
     }
 
 
-
     @Override
     public void onLoadData() {
         this.getService().actionGetListCurrencyDisplay();
@@ -44,7 +43,7 @@ public final class UIDialogCurrency extends UIDialogRecyclerView<GameCurrencyDis
         if (displayDTO != null) {
             UIEditAlertDialog editAlertDialog = new UIEditAlertDialog(this.getContext());
             editAlertDialog.showEditView(displayDTO.DisplayName, callbackDTO.DisplayValue, (e) ->
-                    this.getService().actionUpdateCurrencyInfo(e.getValueAsString(), displayDTO, callbackDTO.ObjectId));
+                    this.getService().actionUpdateCurrencyInfo(displayDTO, e.getValueAsString()));
         } else {
             Toast.makeText(this.getContext(), "NOT FOUND:" + callbackDTO.ObjectId, Toast.LENGTH_SHORT).show();
         }
