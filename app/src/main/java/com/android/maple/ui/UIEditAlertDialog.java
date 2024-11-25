@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
 
 import com.android.maple.MainActivity;
 
-public class UIEditAlertDialog extends LinearLayout {
+public final class UIEditAlertDialog extends LinearLayout {
 
     private final EditText mEditText;
 

@@ -41,10 +41,6 @@ public final class MapleService {
     }
 
 
-    /*load lib*/
-    static {
-        System.loadLibrary("maple");
-    }
 
     public native boolean TestAction(String txt);
 
@@ -187,9 +183,9 @@ public final class MapleService {
         return this.api_GetCurrencyInfo.onCallback(json);
     }
 
-    public boolean actionGetCurrencyInfo(@NotNull String currencyObj) {
+    public void actionGetCurrencyInfo(@NotNull String currencyObj) {
         GameCurrencyObjectDTO dto = new GameCurrencyObjectDTO(this.m_SessionInfoDTO.ObjectId, currencyObj);
-        return this.api_GetCurrencyInfo.apiAction(dto);
+        this.api_GetCurrencyInfo.apiAction(dto);
     }
 
     public void callbackGetCurrencyInfo(

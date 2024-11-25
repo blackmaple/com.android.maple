@@ -19,22 +19,18 @@ public final class UIMenuRoot extends UIComponent {
         this.m_Layout = UIResourceManager.createLayout(context);
         this.m_ButtonMenu = UIResourceManager.createMenuButton(context);
         this.m_Layout.addView(this.m_ButtonMenu, 0, this.getButtonLayoutParams());
-        this.m_ButtonMenu.setOnClickListener((view) -> this.getMenuMain().changeMenuSelected());
 
         this.getService().callbackINFO(this, (s) ->
                 {
                     this.getService().setGameSessionInfoDTO(s);
-                    Toast.makeText(this.getContext(), "LOAD GAME:" + s.DisplayName, Toast.LENGTH_LONG).show();
+                    Toast.makeText(this.getContext(), "LOAD GAME:" + s.DisplayName, Toast.LENGTH_SHORT).show();
+                    this.getMenuMain().changeMenuSelected();
                 },
                 (e) ->
                         Toast.makeText(this.getContext(), "LOAD ERR:" + e.MSG, Toast.LENGTH_LONG).show());
-
+        this.m_ButtonMenu.setOnClickListener((view) -> this.getService().actionINFO());
     }
 
-    public  void onLoadData()
-    {
-        this.getService().actionINFO();
-    }
 
     public View getView() {
         return this.m_Layout;
