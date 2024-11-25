@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public final class UIMenuRoot extends UIComponent {
 
@@ -20,11 +21,20 @@ public final class UIMenuRoot extends UIComponent {
         this.m_Layout.addView(this.m_ButtonMenu, 0, this.getButtonLayoutParams());
         this.m_ButtonMenu.setOnClickListener((view) -> this.getMenuMain().changeMenuSelected());
 
-
-
+        this.getService().callbackINFO(this, (s) ->
+                {
+                    this.getService().setGameSessionInfoDTO(s);
+                    Toast.makeText(this.getContext(), "LOAD GAME:" + s.DisplayName, Toast.LENGTH_LONG).show();
+                },
+                (e) ->
+                        Toast.makeText(this.getContext(), "LOAD ERR:" + e.MSG, Toast.LENGTH_LONG).show());
 
     }
 
+    public  void onLoadData()
+    {
+        this.getService().actionINFO();
+    }
 
     public View getView() {
         return this.m_Layout;

@@ -19,7 +19,6 @@ public final class UIDialogInventory extends UIDialogRecyclerView<GameInventoryD
         service.callbackGetListInventoryDisplay(this, this::callbackLoadData);
         service.callbackGetInventoryInfo(this, this::callbackItemClick);
         service.callbackUpdateInventoryInfo(this, this::callbackUpdateItem);
-        this.onLoadData();
     }
 
 

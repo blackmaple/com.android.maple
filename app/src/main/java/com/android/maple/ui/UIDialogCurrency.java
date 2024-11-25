@@ -20,8 +20,8 @@ public final class UIDialogCurrency extends UIDialogRecyclerView<GameCurrencyDis
         service.callbackGetListCurrencyDisplay(this, this::callbackLoadData);
         service.callbackGetCurrencyInfo(this, this::callbackItemClick);
         service.callbackUpdateCurrencyInfo(this, this::callbackUpdateItem);
-        this.onLoadData();
     }
+
 
 
     @Override

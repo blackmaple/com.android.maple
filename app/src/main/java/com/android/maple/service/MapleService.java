@@ -121,10 +121,15 @@ public final class MapleService {
         this.api_INFO.setApiActionCallback(new UIApiActionCallback<>(handler, s));
     }
 
-    private GameSessionInfoDTO m_SessionInfoDTO;
+    private final GameSessionInfoDTO m_SessionInfoDTO = new GameSessionInfoDTO();
 
     public void setGameSessionInfoDTO(@NotNull GameSessionInfoDTO dto) {
-        this.m_SessionInfoDTO = dto;
+        this.m_SessionInfoDTO.ObjectId = dto.ObjectId;
+        this.m_SessionInfoDTO.ApiVer = dto.ApiVer;
+        this.m_SessionInfoDTO.QQ = dto.QQ;
+        this.m_SessionInfoDTO.DisplayName = dto.DisplayName;
+        this.m_SessionInfoDTO.DisplayDesc = dto.DisplayDesc;
+        this.m_SessionInfoDTO.DisplayImage = dto.DisplayImage;
     }
 
 //    ICallbackListener<String> m_LoadResourceCallback;

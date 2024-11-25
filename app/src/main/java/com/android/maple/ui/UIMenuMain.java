@@ -42,15 +42,8 @@ public final class UIMenuMain {
     }
 
     public void show() {
+        this.m_MenuRoot.onLoadData();
         this.changeContentView(this.m_MenuRoot.getView(), true);
-        this.m_Service.callbackINFO(this.m_MenuRoot, (s) ->
-                {
-                    this.m_Service.setGameSessionInfoDTO(s);
-                    Toast.makeText(this.getContext(), "LOAD GAME:" + s.DisplayName, Toast.LENGTH_LONG).show();
-                },
-                (e) ->
-                        Toast.makeText(this.getContext(), "LOAD ERR:" + e.MSG, Toast.LENGTH_LONG).show());
-        this.m_Service.actionINFO();
     }
 
 
@@ -74,10 +67,12 @@ public final class UIMenuMain {
     }
 
     public void changeDialogCurrency() {
+        this.m_DialogCurrency.onLoadData();
         this.changeContentView(this.m_DialogCurrency.getView(), false);
     }
 
     public void changeDialogInventory() {
+        this.m_DialogInventory.onLoadData();
         this.changeContentView(this.m_DialogInventory.getView(), false);
     }
 
@@ -92,6 +87,10 @@ public final class UIMenuMain {
 
     public boolean postRun(Runnable r) {
         return this.m_MenuFloat.postRun(r);
+    }
+
+    public static void show(Context context) {
+        (new UIMenuMain(context)).show();
     }
 
 }

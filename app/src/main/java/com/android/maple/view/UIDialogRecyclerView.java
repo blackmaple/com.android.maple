@@ -70,6 +70,9 @@ public class UIDialogRecyclerView<TItem extends GameObjectDisplayDTO> extends UI
         this.mRootView = createRootLinearLayout(context);
         this.mRootView.addView(toolsView, 0, createToolsViewLayoutParams(displayMetrics));
         this.mRootView.addView(mRecyclerView, 1, createRecyclerViewLayoutParams());
+
+
+
     }
 
 
