@@ -23,34 +23,34 @@ public final class UIMenuMain {
 
     public UIMenuMain(Context context) {
 
-        Toast.makeText(context, "0", Toast.LENGTH_SHORT).show();
+
         this.m_Service = new MapleService();
 
-        Toast.makeText(context, "1", Toast.LENGTH_SHORT).show();
+
         this.m_Context = context;
 
-        Toast.makeText(context, "2", Toast.LENGTH_SHORT).show();
+
         this.m_MenuFloat = new UIMenuFloat(this);
 
-        Toast.makeText(context, "3", Toast.LENGTH_SHORT).show();
+
         this.m_MenuRoot = new UIMenuRoot(this);
 
-        Toast.makeText(context, "4", Toast.LENGTH_SHORT).show();
+
         this.m_MenuSelected = new UIMenuSelected(this);
 
-        Toast.makeText(context, "5", Toast.LENGTH_SHORT).show();
+
         this.m_DialogCurrency = new UIDialogCurrency(this);
 
-        Toast.makeText(context, "6", Toast.LENGTH_SHORT).show();
+
         this.m_DialogInventory = new UIDialogInventory(this);
 
-        Toast.makeText(context, "7", Toast.LENGTH_SHORT).show();
+
         this.m_DialogCharacter = new UIDialogCharacter(this);
 
-        Toast.makeText(context, "8", Toast.LENGTH_SHORT).show();
+
         this.m_DialogSwitch = new UIDialogSwitch(this);
 
-        Toast.makeText(context, "9", Toast.LENGTH_SHORT).show();
+
 
 
     }
@@ -82,7 +82,7 @@ public final class UIMenuMain {
 
     public void changeMenuSelected() {
 
-        this.changeContentView(this.m_MenuSelected.getView(), false);
+        this.changeContentView(this.m_MenuSelected.getView(), true);
     }
 
     public void changeDialogCurrency() {

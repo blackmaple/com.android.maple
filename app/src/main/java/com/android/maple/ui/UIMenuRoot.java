@@ -12,7 +12,7 @@ public final class UIMenuRoot extends UIComponent {
     final LinearLayout m_Layout;
     final ImageButton m_ButtonMenu;
 
-    @SuppressLint("ClickableViewAccessibility")
+
     public UIMenuRoot(UIMenuMain menuMain) {
         super(menuMain);
         Context context = menuMain.getContext();
