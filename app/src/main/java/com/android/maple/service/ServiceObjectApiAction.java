@@ -2,6 +2,9 @@ package com.android.maple.service;
 
 import java.lang.reflect.Type;
 
+import kotlinx.coroutines.ObsoleteCoroutinesApi;
+
+@ObsoleteCoroutinesApi
 public final class ServiceObjectApiAction<T_REQ, T_RES> extends ServiceVoidApiAction<T_RES> {
 
     private final Type m_ReqJsonType;

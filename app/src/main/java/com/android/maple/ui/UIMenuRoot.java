@@ -7,7 +7,14 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public final class UIMenuRoot extends UIComponent {
+import com.android.maple.gamedto.GameSessionInfoDTO;
+import com.android.maple.monodto.MonoGenericResultDTO;
+import com.android.maple.monodto.ServiceCode;
+import com.android.maple.service.ApiActionCompletionSource;
+
+import java.lang.reflect.Type;
+
+public final class UIMenuRoot extends UIComponent implements View.OnClickListener {
 
     final LinearLayout m_Layout;
     final ImageButton m_ButtonMenu;
@@ -15,20 +22,13 @@ public final class UIMenuRoot extends UIComponent {
 
     public UIMenuRoot(UIMenuMain menuMain) {
         super(menuMain);
+
         Context context = menuMain.getContext();
         this.m_Layout = UIResourceManager.createLayout(context);
         this.m_ButtonMenu = UIResourceManager.createMenuButton(context);
         this.m_Layout.addView(this.m_ButtonMenu, 0, this.getButtonLayoutParams());
+        this.m_ButtonMenu.setOnClickListener(this);
 
-        this.getService().callbackINFO(this, (s) ->
-                {
-                    this.getService().setGameSessionInfoDTO(s);
-                    Toast.makeText(this.getContext(), "LOAD GAME:" + s.DisplayName, Toast.LENGTH_SHORT).show();
-                    this.getMenuMain().changeMenuSelected();
-                },
-                (e) ->
-                        Toast.makeText(this.getContext(), "LOAD ERR:" + e.MSG, Toast.LENGTH_LONG).show());
-        this.m_ButtonMenu.setOnClickListener((view) -> this.getService().actionINFO());
     }
 
 
@@ -36,5 +36,19 @@ public final class UIMenuRoot extends UIComponent {
         return this.m_Layout;
     }
 
+    @Override
+    public void onClick(View view) {
+        MonoGenericResultDTO<GameSessionInfoDTO> dto = this.getService().actionINFO();
+        GameSessionInfoDTO sessionInfoDTO = dto.DATA;
+        if (dto.OK() && sessionInfoDTO != null) {
 
+            this.showMsg(String.format("LOAD GAME:%s %s", sessionInfoDTO.DisplayName, sessionInfoDTO.QQ));
+
+            this.getService().setGameSessionInfoDTO(sessionInfoDTO);
+            this.getMenuMain().changeMenuSelected();
+
+        } else {
+            this.showError(dto);
+        }
+    }
 }

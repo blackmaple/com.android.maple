@@ -1,12 +1,10 @@
 package com.android.maple.ui;
 
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 
 import com.android.maple.gamedto.GameInventoryDisplayDTO;
 import com.android.maple.gamedto.GameInventoryInfoDTO;
-import com.android.maple.service.MapleService;
+import com.android.maple.monodto.MonoGenericResultDTO;
 import com.android.maple.view.UIDialogRecyclerView;
 
 import java.util.Arrays;
@@ -15,47 +13,42 @@ public final class UIDialogInventory extends UIDialogRecyclerView<GameInventoryD
     public UIDialogInventory(UIMenuMain menuMain) {
         super(menuMain);
 
-        MapleService service = this.getService();
-        service.callbackGetListInventoryDisplay(this, this::callbackLoadData);
-        service.callbackGetInventoryInfo(this, this::callbackItemClick);
-        service.callbackUpdateInventoryInfo(this, this::callbackUpdateItem);
     }
-
 
     @Override
     public void onLoadData() {
+        MonoGenericResultDTO<GameInventoryDisplayDTO[]> dto = this.getService().actionGetListInventoryDisplay();
+        if (dto.OK() && dto.DATA != null) {
+            this.replaceAll(Arrays.asList(dto.DATA));
+        } else {
+            this.showError(dto);
+        }
 
-        this.getService().actionGetListInventoryDisplay();
     }
-
-    private void callbackLoadData(GameInventoryDisplayDTO[] items) {
-        this.mViewAdapter.replaceAll(Arrays.asList(items));
-    }
-
 
     @Override
-    public void onItemClick(@NonNull GameInventoryDisplayDTO gameInventoryDisplayDTO) {
-        this.getService().actionGetInventoryInfo(gameInventoryDisplayDTO);
+    public void onItemClick(@NonNull GameInventoryDisplayDTO displayDTO) {
+        MonoGenericResultDTO<GameInventoryInfoDTO> dto = this.getService().actionGetInventoryInfo(displayDTO);
+        GameInventoryInfoDTO callbackDTO = dto.DATA;
+        if (!dto.OK() || callbackDTO == null) {
+            this.showError(dto);
+            return;
+        }
+
+        UIEditAlertDialog editAlertDialog = new UIEditAlertDialog(this.getContext());
+        editAlertDialog.showEditView(displayDTO.DisplayName, callbackDTO.DisplayValue, (e) -> onItemUpdate(displayDTO, e));
     }
 
-    private void callbackItemClick(@NonNull GameInventoryInfoDTO callbackDTO) {
-        GameInventoryDisplayDTO displayDTO = this.findFirst(callbackDTO.ObjectId);
-        if (displayDTO != null) {
-            UIEditAlertDialog editAlertDialog = new UIEditAlertDialog(this.getContext());
-            editAlertDialog.showEditView(displayDTO.DisplayName, callbackDTO.DisplayValue, (e) ->
-                    this.getService().actionUpdateInventoryInfo(displayDTO, e.getValueAsString()));
-        } else {
-            Toast.makeText(this.getContext(), "NOT FOUND:" + callbackDTO.ObjectId, Toast.LENGTH_SHORT).show();
+    private void onItemUpdate(GameInventoryDisplayDTO displayDTO, @NonNull UIEditAlertDialog editAlertDialog) {
+        MonoGenericResultDTO<GameInventoryInfoDTO> dto = this.getService().actionUpdateInventoryInfo(displayDTO, editAlertDialog.getValueAsString());
+        GameInventoryInfoDTO callbackDTO = dto.DATA;
+        if(dto.OK() && callbackDTO != null)
+        {
+            this.showMsg(String.format("%s:%s",displayDTO.DisplayName,callbackDTO.DisplayValue));
+        }
+        else {
+            this.showError(dto);
         }
     }
 
-    private void callbackUpdateItem(@NonNull GameInventoryInfoDTO callbackDTO) {
-        GameInventoryDisplayDTO displayDTO = this.findFirst(callbackDTO.ObjectId);
-        if (displayDTO != null) {
-            Toast.makeText(this.getContext(), displayDTO.DisplayName + ":" + callbackDTO.DisplayValue, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this.getContext(), "NOT FOUND:" + callbackDTO.ObjectId, Toast.LENGTH_SHORT).show();
-
-        }
-    }
 }

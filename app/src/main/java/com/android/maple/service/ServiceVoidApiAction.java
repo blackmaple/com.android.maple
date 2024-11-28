@@ -9,6 +9,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 
+import kotlinx.coroutines.ObsoleteCoroutinesApi;
+
+@ObsoleteCoroutinesApi
 public class ServiceVoidApiAction<T_RES> {
 
     protected final MapleService m_Service;
@@ -42,6 +45,7 @@ public class ServiceVoidApiAction<T_RES> {
         try {
             if (this.m_ApiActionCallback != null) {
                 MonoGenericResultDTO<T_RES> data = toJson(json);
+
                 return this.m_ApiActionCallback.onCallback(data);
             }
         } catch (Exception ex) {

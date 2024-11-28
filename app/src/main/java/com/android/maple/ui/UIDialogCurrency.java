@@ -1,12 +1,10 @@
 package com.android.maple.ui;
 
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 
 import com.android.maple.gamedto.GameCurrencyDisplayDTO;
 import com.android.maple.gamedto.GameCurrencyInfoDTO;
-import com.android.maple.service.MapleService;
+import com.android.maple.monodto.MonoGenericResultDTO;
 import com.android.maple.view.UIDialogRecyclerView;
 
 import java.util.Arrays;
@@ -15,47 +13,42 @@ public final class UIDialogCurrency extends UIDialogRecyclerView<GameCurrencyDis
     public UIDialogCurrency(UIMenuMain menuMain) {
         super(menuMain);
 
-        MapleService service = this.getService();
-
-        service.callbackGetListCurrencyDisplay(this, this::callbackLoadData);
-        service.callbackGetCurrencyInfo(this, this::callbackItemClick);
-        service.callbackUpdateCurrencyInfo(this, this::callbackUpdateItem);
     }
 
 
     @Override
     public void onLoadData() {
-        this.getService().actionGetListCurrencyDisplay();
-    }
+        MonoGenericResultDTO<GameCurrencyDisplayDTO[]> dto = this.getService().actionGetListCurrencyDisplay();
+        if (dto.OK() && dto.DATA != null) {
+            this.replaceAll(Arrays.asList(dto.DATA));
+        } else {
+            this.showError(dto);
+        }
 
-    private void callbackLoadData(GameCurrencyDisplayDTO[] items) {
-        this.replaceAll(Arrays.asList(items));
     }
-
 
     @Override
-    public void onItemClick(@NonNull GameCurrencyDisplayDTO gameCurrencyDisplayDTO) {
-        this.getService().actionGetCurrencyInfo(gameCurrencyDisplayDTO.ObjectId);
-    }
-
-    private void callbackItemClick(@NonNull GameCurrencyInfoDTO callbackDTO) {
-        GameCurrencyDisplayDTO displayDTO = this.findFirst(callbackDTO.ObjectId);
-        if (displayDTO != null) {
-            UIEditAlertDialog editAlertDialog = new UIEditAlertDialog(this.getContext());
-            editAlertDialog.showEditView(displayDTO.DisplayName, callbackDTO.DisplayValue, (e) ->
-                    this.getService().actionUpdateCurrencyInfo(displayDTO, e.getValueAsString()));
-        } else {
-            Toast.makeText(this.getContext(), "NOT FOUND:" + callbackDTO.ObjectId, Toast.LENGTH_SHORT).show();
+    public void onItemClick(@NonNull GameCurrencyDisplayDTO displayDTO) {
+        MonoGenericResultDTO<GameCurrencyInfoDTO> dto = this.getService().actionGetCurrencyInfo(displayDTO);
+        GameCurrencyInfoDTO callbackDTO = dto.DATA;
+        if (!dto.OK() || callbackDTO == null) {
+            this.showError(dto);
+            return;
         }
+
+        UIEditAlertDialog editAlertDialog = new UIEditAlertDialog(this.getContext());
+        editAlertDialog.showEditView(displayDTO.DisplayName, callbackDTO.DisplayValue, (e) -> onItemUpdate(displayDTO, e));
     }
 
-    private void callbackUpdateItem(@NonNull GameCurrencyInfoDTO callbackDTO) {
-        GameCurrencyDisplayDTO displayDTO = this.findFirst(callbackDTO.ObjectId);
-        if (displayDTO != null) {
-            Toast.makeText(this.getContext(), displayDTO.DisplayName + ":" + callbackDTO.DisplayValue, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this.getContext(), "NOT FOUND:" + callbackDTO.ObjectId, Toast.LENGTH_SHORT).show();
-
+    private void onItemUpdate(GameCurrencyDisplayDTO displayDTO, @NonNull UIEditAlertDialog editAlertDialog) {
+        MonoGenericResultDTO<GameCurrencyInfoDTO> dto = this.getService().actionUpdateCurrencyInfo(displayDTO, editAlertDialog.getValueAsString());
+        GameCurrencyInfoDTO callbackDTO = dto.DATA;
+        if(dto.OK() && callbackDTO != null)
+        {
+            this.showMsg(String.format("%s:%s",displayDTO.DisplayName,callbackDTO.DisplayValue));
+        }
+        else {
+            this.showError(dto);
         }
     }
 }
