@@ -53,6 +53,7 @@ public final class UIMenuMain {
     }
 
     public void show() {
+       // this.m_Service.TestAction(getContext().getPackageName());
         this.changeMenuRoot();
     }
 
