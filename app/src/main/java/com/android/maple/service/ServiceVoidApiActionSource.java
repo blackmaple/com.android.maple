@@ -34,8 +34,12 @@ public class ServiceVoidApiActionSource<T_RES> {
         this.m_Service.ApiAction(this.m_ActionIndex, json);
     }
 
+    public MonoGenericResultDTO<T_RES> sendAction(long timeout) {
+        return this.m_ApiActionCallback.sendAction(() -> this.apiAction(""),timeout);
+    }
+
     public MonoGenericResultDTO<T_RES> sendAction() {
-        return this.m_ApiActionCallback.sendAction(() -> this.apiAction(""));
+       return  sendAction(3L);
     }
 
 

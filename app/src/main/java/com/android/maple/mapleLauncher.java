@@ -8,9 +8,9 @@ import com.android.maple.ui.UIMenuMain;
 public final class mapleLauncher {
 
     /*load lib*/
-    static {
-        System.loadLibrary("maple");
-    }
+//    static {
+//        System.loadLibrary("maple");
+//    }
 
     public static void show(Context context) {
         try {

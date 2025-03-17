@@ -17,7 +17,12 @@ public final class ServiceObjectApiActionSource<T_REQ, T_RES> extends ServiceVoi
 
     @NonNull
     public MonoGenericResultDTO<T_RES> sendAction(T_REQ data) {
-        return this.m_ApiActionCallback.sendAction(() -> this.apiAction(fromJson(data)));
+        return sendAction(data, 3L);
+    }
+
+    @NonNull
+    public MonoGenericResultDTO<T_RES> sendAction(T_REQ data, long timeout) {
+        return this.m_ApiActionCallback.sendAction(() -> this.apiAction(fromJson(data)), timeout);
     }
 
     private String fromJson(T_REQ data) {

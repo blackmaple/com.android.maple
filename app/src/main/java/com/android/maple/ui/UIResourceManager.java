@@ -66,7 +66,7 @@ public final class UIResourceManager {
         });
     }
 
-    public static void setImageButtonColor(ImageButton button, int color) {
+    public static void setImageButtonColor(@NonNull ImageButton button, int color) {
         Drawable orgDrawable = button.getDrawable();
         //    m_button.getBackground().setTint(Color.BLACK);
         Drawable tintDrawable = DrawableCompat.wrap(orgDrawable).mutate();

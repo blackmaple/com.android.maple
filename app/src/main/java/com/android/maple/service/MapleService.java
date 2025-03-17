@@ -38,6 +38,15 @@ public final class MapleService {
                 .create();
     }
 
+    private  boolean load = false;
+    public void LoadNativeLibrary()
+    {
+        if(!load ) {
+            System.loadLibrary("maple");
+        }
+        load = true;
+
+    }
 
     public native boolean TestAction(String txt);
 
@@ -97,7 +106,7 @@ public final class MapleService {
     }
 
     public MonoGenericResultDTO<GameSessionInfoDTO> actionINFO() {
-        return this.api_INFO.sendAction();
+        return this.api_INFO.sendAction(10L);
     }
 
 //    public void callbackINFO(

@@ -27,8 +27,16 @@ public final class ApiActionCompletionSource<TData> {
 
     }
 
+
     @NotNull
     public MonoGenericResultDTO<TData> sendAction(Runnable r) {
+
+        return sendAction(r, 3L);
+
+    }
+
+    @NotNull
+    public MonoGenericResultDTO<TData> sendAction(Runnable r, long timeout) {
         try {
             this.m_ReentrantLock.lock();
 
@@ -36,7 +44,7 @@ public final class ApiActionCompletionSource<TData> {
 
             r.run();
 
-            if (this.m_ResultDTO != null || this.m_Condition.await(3L, TimeUnit.SECONDS)) {
+            if (this.m_ResultDTO != null || this.m_Condition.await(timeout, TimeUnit.SECONDS)) {
                 return this.m_ResultDTO;
             }
             return m_TimeOutDTO;

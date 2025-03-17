@@ -45,6 +45,7 @@ public final class UIMenuMain {
     }
 
     public MapleService getService() {
+        this.m_Service.LoadNativeLibrary();
         return this.m_Service;
     }
 
