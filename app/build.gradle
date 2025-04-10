@@ -8,6 +8,7 @@ android {
     sourceSets {
         main {
             jniLibs.srcDirs = ['src/main/jniLibs']
+            assets.srcDirs = ['src/main/assets', 'src/main/assets/_content', 'src/main/assets/_framework', 'src/main/assets/css']
         }
     }
     defaultConfig {

@@ -43,19 +43,20 @@ public final class UIMenuRoot extends UIComponent implements View.OnClickListene
 
             this.m_ButtonMenu.setEnabled(false);
             this.showMsg("LOADING...");
+            this.getMenuMain().changeMenuSelected();
 
-            MonoGenericResultDTO<GameSessionInfoDTO> dto = this.getService().actionINFO();
-            GameSessionInfoDTO sessionInfoDTO = dto.DATA;
-            if (dto.OK() && sessionInfoDTO != null) {
-
-                this.showMsg(String.format("LOAD GAME:%s %s", sessionInfoDTO.DisplayName, sessionInfoDTO.QQ));
-
-                this.getService().setGameSessionInfoDTO(sessionInfoDTO);
-                this.getMenuMain().changeMenuSelected();
-
-            } else {
-                this.showError(dto);
-            }
+//            MonoGenericResultDTO<GameSessionInfoDTO> dto = this.getService().actionINFO();
+//            GameSessionInfoDTO sessionInfoDTO = dto.DATA;
+//            if (dto.OK() && sessionInfoDTO != null) {
+//
+//                this.showMsg(String.format("LOAD GAME:%s %s", sessionInfoDTO.DisplayName, sessionInfoDTO.QQ));
+//
+//                this.getService().setGameSessionInfoDTO(sessionInfoDTO);
+//                this.getMenuMain().changeMenuSelected();
+//
+//            } else {
+//                this.showError(dto);
+//            }
 
         } finally {
             this.m_ButtonMenu.setEnabled(true);

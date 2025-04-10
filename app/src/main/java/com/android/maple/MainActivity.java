@@ -1,6 +1,7 @@
 package com.android.maple;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -10,9 +11,18 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.maple.ui.UIResourceManager;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public final class MainActivity extends AppCompatActivity {
 
@@ -22,35 +32,12 @@ public final class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        LinearLayout linearLayout = UIResourceManager.createLayout(this);
-//        ImageButton imageButton = UIResourceManager.createEditButton(this);
-//        imageButton.setOnClickListener(v -> Toast.makeText(this.getBaseContext(), getApplication().getPackageName(), Toast.LENGTH_SHORT).show());
-//        linearLayout.addView(imageButton);
-//        setContentView(linearLayout);
-//        mapleLauncher.show(this);
-        WebView webView = new WebView(this);
-        WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);
-        settings.setAllowFileAccess(true);
-        settings.setAllowContentAccess(true);
-        webView.setWebViewClient(new WebViewClient()
-        {
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                view.loadUrl(request.getUrl().toString());
-                return true;
-            }
-
-
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                // 页面加载完成
-                super.onPageFinished(view, url);
-            }
-        });
-        webView.loadUrl("http://192.168.3.185:19139/index");
-        setContentView(webView);
+        LinearLayout linearLayout = UIResourceManager.createLayout(this);
+        ImageButton imageButton = UIResourceManager.createEditButton(this);
+        imageButton.setOnClickListener(v -> Toast.makeText(this.getBaseContext(), getApplication().getPackageName(), Toast.LENGTH_SHORT).show());
+        linearLayout.addView(imageButton);
+        setContentView(linearLayout);
+        mapleLauncher.show(this);
     }
 
 

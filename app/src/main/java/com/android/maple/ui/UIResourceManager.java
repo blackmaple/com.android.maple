@@ -19,6 +19,13 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import kotlinx.coroutines.ObsoleteCoroutinesApi;
 
 public final class UIResourceManager {
@@ -46,6 +53,10 @@ public final class UIResourceManager {
 
     static final String Base64Image_Edit =
             "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";
+
+    static final String Base64Image_Html =
+"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";
+
 
     public static int Color_Gray = Color.parseColor("#475569");
     public static int Color_Blue = Color.parseColor("#0891b2");
@@ -133,6 +144,13 @@ public final class UIResourceManager {
         onTouchChangeButtonColor(button, Color_Orange, Color_Blue);
         return button;
     }
+    @NonNull
+    public static ImageButton createHtmlButton(Context context) {
+        Bitmap imageMenu = createBitmap(Base64Image_Html);
+        ImageButton button = createImageButton(context, imageMenu);
+        onTouchChangeButtonColor(button, Color_Orange, Color_Blue);
+        return button;
+    }
 
     @NonNull
     public static ImageButton createSwitchButton(Context context) {
@@ -191,6 +209,55 @@ public final class UIResourceManager {
         canvas.drawBitmap(inputImage, 0, 0, paint);
         return outputImage;
     }
+
+
+    public static void  initWWWRoot(@NonNull Context context)
+    {
+        File wwwrootDir = new File(context.getFilesDir(),"wwwroot");
+        if(!wwwrootDir.exists()  )
+        {
+            try {
+                copyAssetsToWWWRoot(context,"wwwroot",wwwrootDir.getPath());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    static void copyAssetsToWWWRoot(@NonNull Context context, String assetPath, String targetPath) throws IOException {
+        // 获取 assets 目录下的文件列表
+        String[] assets = context.getAssets().list(assetPath);
+        if (assets == null || assets.length == 0) return;
+
+        // 创建目标目录（如果不存在）
+        File targetDir = new File(targetPath);
+        if (!targetDir.exists()) {
+            Boolean a= targetDir.mkdirs();
+        }
+
+        // 遍历并复制每个文件
+        for (String asset : assets) {
+            String sourcePath = assetPath.isEmpty() ? asset : assetPath + "/" + asset;
+            String destPath = targetPath + "/" + asset;
+
+            // 检查是否是子目录（递归处理）
+            String[] tmp = context.getAssets().list(sourcePath);
+            if (tmp!= null && tmp.length > 0) {
+                copyAssetsToWWWRoot(context, sourcePath, destPath);
+            } else {
+                // 复制文件
+                try (InputStream source = context.getAssets().open(sourcePath);
+                     OutputStream dest = Files.newOutputStream(Paths.get(destPath))) {
+                    byte[] buffer = new byte[1024];
+                    int length;
+                    while ((length = source.read(buffer)) > 0) {
+                        dest.write(buffer, 0, length);
+                    }
+                }
+            }
+        }
+    }
+
+
 
 
 }

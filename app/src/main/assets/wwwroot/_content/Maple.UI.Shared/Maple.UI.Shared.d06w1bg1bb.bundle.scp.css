@@ -1,0 +1,249 @@
+/* _content/Maple.UI.Shared/Dialogs/SkillDialog.razor.rz.scp.css */
+.skill-list[b-yattt93zha] {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    height: 70vh;
+    overflow-y: auto;
+}
+
+.skill-item[b-yattt93zha] {
+    display: flex;
+    align-items: center;
+    height: 4rem;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+    .skill-item[b-yattt93zha] >  svg {
+        flex-shrink: 0;
+    }
+
+    .skill-item:hover[b-yattt93zha] {
+        color: var(--accent-base-color);
+    }
+
+    .skill-item > .skill-info[b-yattt93zha] {
+        display: flex;
+        gap: 2px;
+        flex-direction: column;
+        max-height: 64px;
+    }
+
+        .skill-item > .skill-info > div:last-of-type[b-yattt93zha] {
+            overflow-y: auto;
+        }
+
+    .skill-item > .skill-operator[b-yattt93zha] {
+        flex-shrink: 0;
+        margin-left: auto;
+    }
+
+.desc[b-yattt93zha] {
+    margin-left: 58px;
+}
+/* _content/Maple.UI.Shared/Dialogs/SkillSubDialog.razor.rz.scp.css */
+.skill-list[b-ra6uza9avm] {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    height: 70vh;
+    overflow-y: auto;
+}
+
+.skill-item[b-ra6uza9avm] {
+    display: flex;
+    align-items: center;
+    height: 4rem;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+    .skill-item[b-ra6uza9avm] >  svg {
+        flex-shrink: 0;
+    }
+
+    .skill-item:hover[b-ra6uza9avm] {
+        color: var(--accent-base-color);
+    }
+
+    .skill-item > .skill-info[b-ra6uza9avm] {
+        display: flex;
+        gap: 2px;
+        flex-direction: column;
+        max-height: 64px;
+    }
+
+        .skill-item > .skill-info > div:last-of-type[b-ra6uza9avm] {
+            overflow-y: auto;
+        }
+
+    .skill-item > .skill-operator[b-ra6uza9avm] {
+        flex-shrink: 0;
+        margin-left: auto;
+    }
+
+[b-ra6uza9avm] fluent-search {
+    margin-inline-start: 0;
+    width: 100%;
+}
+
+    [b-ra6uza9avm] fluent-search::part(root) {
+        width: 100%;
+    }
+/* _content/Maple.UI.Shared/Dialogs/StatusDialog.razor.rz.scp.css */
+.status-list[b-evx5npm11b] {
+    height: calc(13 * 34px);
+    overflow-y: auto;
+}
+
+.status-item[b-evx5npm11b] {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    margin-bottom: 2px;
+    height: 32px;
+}
+
+    .status-item:hover[b-evx5npm11b] {
+        color: var(--accent-base-color);
+    }
+
+    .status-item > div:first-child[b-evx5npm11b] {
+        width: 8rem;
+        border-radius: 4px;
+        padding-right: 4px;
+        direction: rtl;
+        height: calc(2rem - 2px);
+        line-height: 2rem;
+        /*background-color: #f0f0f0;*/
+        background-color: transparent;
+    }
+
+    .status-item > div:last-child[b-evx5npm11b] {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+.desc[b-evx5npm11b] {
+    margin-left: 58px;
+}
+
+
+[b-evx5npm11b] fluent-number-field::part(control),
+[b-evx5npm11b] fluent-select,
+[b-evx5npm11b] fluent-select::part(control) {
+    width: 10rem;
+    min-width: 10rem;
+}
+/* _content/Maple.UI.Shared/Layout/MainLayout.razor.rz.scp.css */
+.page[b-vg8c4o14x1] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main[b-vg8c4o14x1] {
+    flex: 1;
+}
+
+.sidebar[b-vg8c4o14x1] {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.top-row[b-vg8c4o14x1] {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+    .top-row[b-vg8c4o14x1]  a, .top-row[b-vg8c4o14x1]  .btn-link {
+        white-space: nowrap;
+        margin-left: 1.5rem;
+        text-decoration: none;
+    }
+
+        .top-row[b-vg8c4o14x1]  a:hover, .top-row[b-vg8c4o14x1]  .btn-link:hover {
+            text-decoration: underline;
+        }
+
+        .top-row[b-vg8c4o14x1]  a:first-child {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+@media (max-width: 640.98px) {
+    .top-row[b-vg8c4o14x1] {
+        justify-content: space-between;
+    }
+
+        .top-row[b-vg8c4o14x1]  a, .top-row[b-vg8c4o14x1]  .btn-link {
+            margin-left: 0;
+        }
+}
+
+@media (min-width: 641px) {
+    .page[b-vg8c4o14x1] {
+        flex-direction: row;
+    }
+
+    .sidebar[b-vg8c4o14x1] {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row[b-vg8c4o14x1] {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+        .top-row.auth[b-vg8c4o14x1]  a:first-child {
+            flex: 1;
+            text-align: right;
+            width: 0;
+        }
+
+    .top-row[b-vg8c4o14x1], article[b-vg8c4o14x1] {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }
+}
+
+#blazor-error-ui[b-vg8c4o14x1] {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss[b-vg8c4o14x1] {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+
+.search-container[b-vg8c4o14x1] {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+}
+/* _content/Maple.UI.Shared/Pages/Currency.razor.rz.scp.css */
+/* _content/Maple.UI.Shared/Pages/Misc.razor.rz.scp.css */
+.display-name-row[b-idoyovpnog] {
+    font-weight: bold;
+}
