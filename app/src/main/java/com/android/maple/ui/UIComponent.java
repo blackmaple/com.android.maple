@@ -59,11 +59,11 @@ public abstract class UIComponent implements IUIMessageHandler {
     }
 
     protected void showMsg(String msg) {
-        Toast.makeText(this.getContext(), msg, Toast.LENGTH_LONG).show();
+        Toast.makeText(this.getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     protected void showError(@NonNull MonoResultDTO dto) {
-        showMsg(String.format("API ERROR:%s", dto.MSG));
+        Toast.makeText(this.getContext(), String.format("API ERROR:%s", dto.MSG), Toast.LENGTH_LONG).show();
     }
 }
 

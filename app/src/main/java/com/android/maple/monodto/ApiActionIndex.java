@@ -40,4 +40,7 @@ public class ApiActionIndex {
 
     public static int GetListSwitchDisplay = AddSkillDisplay + 1;
     public static int UpdateSwitchDisplay = GetListSwitchDisplay + 1;
+
+
+    public static int Notify = UpdateSwitchDisplay + 1;
 }

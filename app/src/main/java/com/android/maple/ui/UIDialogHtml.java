@@ -26,6 +26,7 @@ public class UIDialogHtml extends UIComponent {
     public UIDialogHtml(@NonNull UIMenuMain menuMain ) {
         super(menuMain);
         Context context = menuMain.getContext();
+
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 
         this.m_RootView = createRootLinearLayout(context);
@@ -120,7 +121,7 @@ public class UIDialogHtml extends UIComponent {
     }
 
 
-    public  void loadUrl(String url){
+    public void loadUrl(String url){
         System.out.println(this.m_WebView.getUrl());
         if(this.m_WebView.getUrl() == null)
         {
@@ -128,4 +129,5 @@ public class UIDialogHtml extends UIComponent {
         }
 
     }
+
 }

@@ -1,7 +1,10 @@
 package com.android.maple.service;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.android.maple.gamedto.AndroidSessionInfoDTO;
+import com.android.maple.gamedto.AndroidWebApiNotifyDTO;
 import com.android.maple.gamedto.GameCurrencyDisplayDTO;
 import com.android.maple.gamedto.GameCurrencyInfoDTO;
 import com.android.maple.gamedto.GameCurrencyModifyDTO;
@@ -38,10 +41,10 @@ public final class MapleService {
                 .create();
     }
 
-    private  boolean load = false;
-    public void LoadNativeLibrary()
-    {
-        if(!load ) {
+    private boolean load = false;
+
+    public void LoadNativeLibrary() {
+        if (!load) {
             System.loadLibrary("maple");
         }
         load = true;
@@ -52,6 +55,27 @@ public final class MapleService {
 
     public native boolean ApiAction(int actionIndex, String json);
 
+
+    /***ApiActionIndex.Notify***/
+    @NonNull
+    private ServiceObjectApiActionSource<AndroidWebApiNotifyDTO, AndroidSessionInfoDTO> createApiNotify() {
+        Type req = new TypeToken<AndroidWebApiNotifyDTO>() {
+        }.getType();
+        Type res = new TypeToken<MonoGenericResultDTO<AndroidSessionInfoDTO>>() {
+        }.getType();
+        return new ServiceObjectApiActionSource<>(this, ApiActionIndex.Notify, req, res);
+    }
+
+    private final ServiceObjectApiActionSource<AndroidWebApiNotifyDTO, AndroidSessionInfoDTO> api_Notify = createApiNotify();
+
+    public boolean Notify(String json) {
+        return this.api_Notify.onCallback(json);
+    }
+
+    public MonoGenericResultDTO<AndroidSessionInfoDTO> actionNotify(String path) {
+        AndroidWebApiNotifyDTO msg = new AndroidWebApiNotifyDTO(path);
+        return this.api_Notify.sendAction(msg, 10);
+    }
 
     /***ApiActionIndex.None***/
     @NonNull
@@ -122,15 +146,21 @@ public final class MapleService {
 //        this.api_INFO.setApiActionCallback(new UIApiActionCallback<>(handler, s));
 //    }
 
-    private final GameSessionInfoDTO m_SessionInfoDTO = new GameSessionInfoDTO();
+    private final AndroidSessionInfoDTO m_SessionInfoDTO = new AndroidSessionInfoDTO();
 
-    public void setGameSessionInfoDTO(@NotNull GameSessionInfoDTO dto) {
+    public void setGameSessionInfoDTO(@NotNull AndroidSessionInfoDTO dto) {
         this.m_SessionInfoDTO.ObjectId = dto.ObjectId;
         this.m_SessionInfoDTO.ApiVer = dto.ApiVer;
         this.m_SessionInfoDTO.QQ = dto.QQ;
         this.m_SessionInfoDTO.DisplayName = dto.DisplayName;
         this.m_SessionInfoDTO.DisplayDesc = dto.DisplayDesc;
         this.m_SessionInfoDTO.DisplayImage = dto.DisplayImage;
+        this.m_SessionInfoDTO.Address = dto.Address;
+    }
+
+    @Nullable
+    public String GetUrlAddress() {
+        return this.m_SessionInfoDTO.Address;
     }
 
 //    ICallbackListener<String> m_LoadResourceCallback;

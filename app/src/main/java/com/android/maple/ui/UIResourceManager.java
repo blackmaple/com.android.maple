@@ -211,7 +211,8 @@ public final class UIResourceManager {
     }
 
 
-    public static void  initWWWRoot(@NonNull Context context)
+    @NonNull
+    public static String copyStaticFile(@NonNull Context context)
     {
         File wwwrootDir = new File(context.getFilesDir(),"wwwroot");
         if(!wwwrootDir.exists()  )
@@ -222,6 +223,7 @@ public final class UIResourceManager {
                 throw new RuntimeException(e);
             }
         }
+        return  wwwrootDir.getPath();
     }
     static void copyAssetsToWWWRoot(@NonNull Context context, String assetPath, String targetPath) throws IOException {
         // 获取 assets 目录下的文件列表

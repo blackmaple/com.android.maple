@@ -13,13 +13,14 @@ public final class UIMenuMain {
     private final IUIMenuFloat m_MenuFloat;
     private final UIMenuRoot m_MenuRoot;
     private final UIMenuSelected m_MenuSelected;
-//    private final UIDialogCurrency m_DialogCurrency;
+    //    private final UIDialogCurrency m_DialogCurrency;
 //    private final UIDialogInventory m_DialogInventory;
 //    private final UIDialogCharacter m_DialogCharacter;
 //    private final UIDialogSwitch m_DialogSwitch;
-    private final  UIDialogHtml  m_DialogHtml;
+    private final UIDialogHtml m_DialogHtml;
 
     public UIMenuMain(Context context) {
+
 
         this.m_Context = context;
 
@@ -87,9 +88,8 @@ public final class UIMenuMain {
 //        this.changeContentView(this.m_DialogSwitch.getView(), false);
 //    }
 
-    public void changeDialogHtml()
-    {
-        this.m_DialogHtml.loadUrl("https://www.baidu.com");
+    public void changeDialogHtml() {
+        this.m_DialogHtml.loadUrl(this.m_Service.GetUrlAddress());
         this.changeContentView(this.m_DialogHtml.getView(), false);
     }
 

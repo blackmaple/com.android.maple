@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.android.maple.gamedto.AndroidSessionInfoDTO;
 import com.android.maple.gamedto.GameSessionInfoDTO;
 import com.android.maple.monodto.MonoGenericResultDTO;
 import com.android.maple.monodto.ServiceCode;
@@ -20,6 +21,7 @@ public final class UIMenuRoot extends UIComponent implements View.OnClickListene
     final LinearLayout m_Layout;
     final ImageButton m_ButtonMenu;
 
+    final String m_Path;
 
     public UIMenuRoot(UIMenuMain menuMain) {
         super(menuMain);
@@ -30,6 +32,8 @@ public final class UIMenuRoot extends UIComponent implements View.OnClickListene
         this.m_Layout.addView(this.m_ButtonMenu, 0, this.getButtonLayoutParams());
         this.m_ButtonMenu.setOnClickListener(this);
 
+        this.m_Path = UIResourceManager.copyStaticFile(context);
+        this.showMsg(String.format("wwwroot:%s",this.m_Path));
     }
 
 
@@ -43,20 +47,19 @@ public final class UIMenuRoot extends UIComponent implements View.OnClickListene
 
             this.m_ButtonMenu.setEnabled(false);
             this.showMsg("LOADING...");
-            this.getMenuMain().changeMenuSelected();
 
-//            MonoGenericResultDTO<GameSessionInfoDTO> dto = this.getService().actionINFO();
-//            GameSessionInfoDTO sessionInfoDTO = dto.DATA;
-//            if (dto.OK() && sessionInfoDTO != null) {
-//
-//                this.showMsg(String.format("LOAD GAME:%s %s", sessionInfoDTO.DisplayName, sessionInfoDTO.QQ));
-//
-//                this.getService().setGameSessionInfoDTO(sessionInfoDTO);
-//                this.getMenuMain().changeMenuSelected();
-//
-//            } else {
-//                this.showError(dto);
-//            }
+
+            MonoGenericResultDTO<AndroidSessionInfoDTO> dto = this.getService().actionNotify(this.m_Path);
+            AndroidSessionInfoDTO sessionInfoDTO = dto.DATA;
+            if (dto.OK() && sessionInfoDTO != null) {
+
+                this.showMsg(String.format("LOAD GAME:%s %s %s", sessionInfoDTO.DisplayName, sessionInfoDTO.QQ, sessionInfoDTO.Address));
+                this.getService().setGameSessionInfoDTO(sessionInfoDTO);
+                this.getMenuMain().changeMenuSelected();
+
+            } else {
+                this.showError(dto);
+            }
 
         } finally {
             this.m_ButtonMenu.setEnabled(true);

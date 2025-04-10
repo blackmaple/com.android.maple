@@ -4,7 +4,7 @@ import androidx.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class GameSessionInfoDTO extends GameDisplayDTO {
+public class AndroidSessionInfoDTO extends GameSessionInfoDTO {
     @Nullable
     @SerializedName("apiVer")
     public String ApiVer;
@@ -13,6 +13,12 @@ public class GameSessionInfoDTO extends GameDisplayDTO {
     @SerializedName("qq")
     public String QQ;
 
+    @SerializedName("status")
+    public boolean Status;
+
+    @Nullable
+    @SerializedName("address")
+    public String Address;
 }
 
 
