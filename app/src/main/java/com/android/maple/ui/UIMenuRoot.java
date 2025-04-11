@@ -48,8 +48,9 @@ public final class UIMenuRoot extends UIComponent implements View.OnClickListene
             this.m_ButtonMenu.setEnabled(false);
             this.showMsg("LOADING...");
 
+            MapleService.initialize(this.getContext());
 
-            MonoGenericResultDTO<AndroidSessionInfoDTO> dto = this.getService().actionNotify(this.m_Path);
+            MonoGenericResultDTO<AndroidSessionInfoDTO> dto = this.getService().actionINFO();
             AndroidSessionInfoDTO sessionInfoDTO = dto.DATA;
             if (dto.OK() && sessionInfoDTO != null) {
 

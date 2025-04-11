@@ -1,5 +1,8 @@
 package com.android.maple.service;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -24,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.lang.reflect.Type;
 
 public final class MapleService {
@@ -41,14 +45,18 @@ public final class MapleService {
                 .create();
     }
 
-    private boolean load = false;
 
-    public void LoadNativeLibrary() {
-        if (!load) {
-            System.loadLibrary("maple");
-        }
-        load = true;
+    private static String s_Path;
 
+    public static void initialize(@NonNull Context context) {
+        File file = context.getExternalFilesDir(null);
+        if (file != null) s_Path = file.getPath();
+        System.loadLibrary("maple");
+    }
+
+    @Nullable
+    public static String getContentRoot() {
+        return s_Path;
     }
 
     public native boolean TestAction(String txt);
@@ -56,26 +64,7 @@ public final class MapleService {
     public native boolean ApiAction(int actionIndex, String json);
 
 
-    /***ApiActionIndex.Notify***/
-    @NonNull
-    private ServiceObjectApiActionSource<AndroidWebApiNotifyDTO, AndroidSessionInfoDTO> createApiNotify() {
-        Type req = new TypeToken<AndroidWebApiNotifyDTO>() {
-        }.getType();
-        Type res = new TypeToken<MonoGenericResultDTO<AndroidSessionInfoDTO>>() {
-        }.getType();
-        return new ServiceObjectApiActionSource<>(this, ApiActionIndex.Notify, req, res);
-    }
 
-    private final ServiceObjectApiActionSource<AndroidWebApiNotifyDTO, AndroidSessionInfoDTO> api_Notify = createApiNotify();
-
-    public boolean Notify(String json) {
-        return this.api_Notify.onCallback(json);
-    }
-
-    public MonoGenericResultDTO<AndroidSessionInfoDTO> actionNotify(String path) {
-        AndroidWebApiNotifyDTO msg = new AndroidWebApiNotifyDTO(path);
-        return this.api_Notify.sendAction(msg, 10);
-    }
 
     /***ApiActionIndex.None***/
     @NonNull
@@ -116,20 +105,20 @@ public final class MapleService {
 
     /***ApiActionIndex.INFO***/
     @NonNull
-    private ServiceVoidApiActionSource<GameSessionInfoDTO> createApiINFO() {
-        Type res = new TypeToken<MonoGenericResultDTO<GameSessionInfoDTO>>() {
+    private ServiceVoidApiActionSource<AndroidSessionInfoDTO> createApiINFO() {
+        Type res = new TypeToken<MonoGenericResultDTO<AndroidSessionInfoDTO>>() {
         }.getType();
         return new ServiceVoidApiActionSource<>(this, ApiActionIndex.INFO, res);
     }
 
-    private final ServiceVoidApiActionSource<GameSessionInfoDTO> api_INFO
+    private final ServiceVoidApiActionSource<AndroidSessionInfoDTO> api_INFO
             = createApiINFO();
 
     public boolean INFO(String json) {
         return this.api_INFO.onCallback(json);
     }
 
-    public MonoGenericResultDTO<GameSessionInfoDTO> actionINFO() {
+    public MonoGenericResultDTO<AndroidSessionInfoDTO> actionINFO() {
         return this.api_INFO.sendAction(10L);
     }
 
