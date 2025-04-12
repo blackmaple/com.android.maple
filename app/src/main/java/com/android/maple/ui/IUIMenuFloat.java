@@ -8,6 +8,7 @@ public interface IUIMenuFloat {
     Context getContext();
 
     void changeContentView(View view,boolean touchable);
+   // void changeContentView2(View view,boolean touchable);
 
     boolean postRun(Runnable r);
 }

@@ -33,7 +33,7 @@ public final class UIMenuRoot extends UIComponent implements View.OnClickListene
         this.m_ButtonMenu.setOnClickListener(this);
 
         this.m_Path = UIResourceManager.copyStaticFile(context);
-        this.showMsg(String.format("wwwroot:%s",this.m_Path));
+      //  this.showMsg(String.format("wwwroot:%s",this.m_Path));
     }
 
 

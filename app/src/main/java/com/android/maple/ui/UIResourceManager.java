@@ -215,12 +215,10 @@ public final class UIResourceManager {
     @NonNull
     public static String copyStaticFile(@NonNull Context context) {
         File wwwrootDir = new File(context.getExternalFilesDir(null), "wwwroot");
-        if (!wwwrootDir.exists()) {
-            try {
-                copyAssetsToWWWRoot(context, "wwwroot", wwwrootDir.getPath());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        try {
+            copyAssetsToWWWRoot(context, "wwwroot", wwwrootDir.getPath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return wwwrootDir.getPath();
     }

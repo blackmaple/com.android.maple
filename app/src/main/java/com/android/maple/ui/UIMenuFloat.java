@@ -2,10 +2,12 @@ package com.android.maple.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
@@ -35,6 +37,8 @@ public final class UIMenuFloat extends UIComponent implements IUIMenuFloat {
         ViewGroup.LayoutParams mainParams = this.m_window.getWindowParams();
         mainParams.width = viewParams.width;
         mainParams.height = viewParams.height;
+
+
         this.m_window.setContentView(view)
                 .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         this.m_window.setOutsideTouchable(touchable);
@@ -43,6 +47,19 @@ public final class UIMenuFloat extends UIComponent implements IUIMenuFloat {
         }
     }
 
+    public void changeContentView2(@NonNull View view, boolean touchable) {
+        ViewGroup.LayoutParams mainParams = this.m_window.getWindowParams();
+        DisplayMetrics displayMetrics =  view.getResources().getDisplayMetrics();
+
+        mainParams.width = displayMetrics.widthPixels;
+        mainParams.height = displayMetrics.heightPixels;
+        this.m_window.setContentView(view)
+                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        this.m_window.setOutsideTouchable(touchable);
+        if (!this.m_window.isShowing()) {
+            this.m_window.show();
+        }
+    }
 
     @Override
     public View getView() {

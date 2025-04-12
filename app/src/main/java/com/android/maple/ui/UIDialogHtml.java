@@ -37,7 +37,7 @@ public class UIDialogHtml extends UIComponent {
 
 
         this.m_RootView.addView(closeButton,0,createButtonLayoutParams(displayMetrics));
-        this.m_RootView.addView(this.m_WebView,1,createWebViewLayoutParams());
+        this.m_RootView.addView(this.m_WebView,1,createWebViewLayoutParams(displayMetrics));
     }
 
     @Override
@@ -83,8 +83,8 @@ public class UIDialogHtml extends UIComponent {
     private LinearLayout.LayoutParams createButtonLayoutParams(DisplayMetrics displayMetrics) {
         int buttonMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, displayMetrics);
 
-        int buttonWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, displayMetrics);
-        int buttonHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, displayMetrics);
+        int buttonWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, displayMetrics);
+        int buttonHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, displayMetrics);
         LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(buttonWidth, buttonHeight);
         buttonParams.setMargins(buttonMargin, 0, 0, 0);
         return buttonParams;
@@ -98,13 +98,11 @@ public class UIDialogHtml extends UIComponent {
     }
 
     @NonNull
-    private LinearLayout.LayoutParams createWebViewLayoutParams() {
-        LinearLayout.LayoutParams recyclerViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, // 宽度
-                LinearLayout.LayoutParams.MATCH_PARENT, 1.0f
-                // 高度
+    private LinearLayout.LayoutParams createWebViewLayoutParams(DisplayMetrics displayMetrics) {
+        return new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
         );
-        recyclerViewParams.weight = 1.0f;
-        return recyclerViewParams;
     }
 
     @NonNull
